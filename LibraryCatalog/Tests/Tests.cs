@@ -1,17 +1,36 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryCatalogueProject.Tests
 {
-    class Tests
+    [TestClass]
+    public class Tests
     {
         [TestMethod]
-        public void ShoppingCart_Customer_GetsAssigned_Test()
+        public void Test1()
+        {
+            //Arrange
+
+
+            //Act
+
+
+            //Assert
+        }
+
+        [TestMethod]
+        public void Test2()
+        {
+            //Arrange
+
+
+            //Act
+
+
+            //Assert
+        }
+
+        [TestMethod]
+        public void Test3()
         {
             //Arrange
 

@@ -134,7 +134,7 @@ namespace LibraryCatalogueProject
 
             foreach (var book in overdueBooks)
             {
-                Console.WriteLine($"Overdue item(s):\n{book.Title}\nDays late: {(DaysTillDue(book)) * -1}\n");
+                Console.WriteLine($"Overdue item(s):\n{book.ItemType}: '{book.Title}'\nDays late: {(DaysTillDue(book)) * -1}\n");
             }
         }
 
