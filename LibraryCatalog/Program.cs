@@ -86,7 +86,7 @@ namespace LibraryCatalogueProject
             Console.WriteLine("*****************");
 
             // Add Days:
-            //booksLibrary.SetDay(DateTime.Today.AddDays(7));
+            booksLibrary.SetDay(8);
 
             // Get book customer has:
             Console.WriteLine("Customer books: ");
@@ -94,19 +94,13 @@ namespace LibraryCatalogueProject
             Console.WriteLine("*****************");
 
             // Get overdue books:
-            Console.WriteLine("Overdue items: ");
             booksLibrary.OverdueBooksByCustomerName(customer.FullName);
             Console.WriteLine("*****************");
 
             // Returning books:
-            booksLibrary.ReturnBook("50000003");
-            Console.WriteLine("*****************");
-
+            booksLibrary.ReturnBook("50000000");
             booksLibrary.ReturnBook("70000011");
-            Console.WriteLine("*****************");
-
             booksLibrary.ReturnBook("48039486");
-            Console.WriteLine("*****************");
 
             Console.ReadLine();
         }

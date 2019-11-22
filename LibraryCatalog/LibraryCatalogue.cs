@@ -53,7 +53,7 @@ namespace LibraryCatalogueProject
                     BookAlreadyCheckedOut(book);
                     return false; 
                 } 
-                Console.WriteLine($"We have '{book.Title}'!\n"); 
+                Console.WriteLine($"We have '{book.Title}'!"); 
                 return true; 
             } 
             else 
@@ -68,7 +68,7 @@ namespace LibraryCatalogueProject
             if (BookCollection.TryGetValue(title, out Book book)) 
             { 
                 book.SetIsCheckedOut(true, CurrentDay, customer);
-                Console.WriteLine($"You just checked out '{book.Title}' book. Please return it in {LengthOfCheckoutPeriod} days.\n");
+                Console.WriteLine($"You just checked out '{book.Title}' {book.ItemType.ToLower()}. \nNote: Please return it in {SetCheckoutPeriodByItemType(book)} days.\n");
                 return book;
 
             } 
@@ -81,18 +81,18 @@ namespace LibraryCatalogueProject
         {
             if (!BookCollection.TryGetValue(title, out Book book)) // <--- was throwing exception
             {
-                Console.WriteLine("This book doesn't belong to out library");
+                Console.WriteLine("This book doesn't belong to out library.\n");
                 return;
             }
 
-            var daysLate = CurrentDay - (book.DayCheckedOut + LengthOfCheckoutPeriod);
+            var daysLate = CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book));
             if (daysLate > 0)
             {
-                Console.WriteLine($"You owe the library ${InitialLateFee + daysLate * FeePerLateDay} because your " +
-                    $"book '{book.Title}' is {daysLate} days overdue.\n");
+                Console.WriteLine($"You owe the library ${InitialLateFee + daysLate * FeePerLateDay} because " +
+                    $"'{book.Title}' is {daysLate} days overdue.");
             }
       
-            Console.WriteLine("Book returned. Thank you!");
+            Console.WriteLine("Item returned. Thank you!\n");
 
             book.SetIsCheckedOut(false, -1, null);
         }
@@ -110,7 +110,7 @@ namespace LibraryCatalogueProject
 
 
         // Method to get Days till books are due:
-        private int DaysTillDue(Book book) => (CurrentDay - (book.DayCheckedOut + LengthOfCheckoutPeriod)) * -1;
+        private int DaysTillDue(Book book) => (CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book))) * -1;
 
 
         // Checked out books by Customer Name, and when books are due:
@@ -134,8 +134,23 @@ namespace LibraryCatalogueProject
 
             foreach (var book in overdueBooks)
             {
-                Console.WriteLine($"Overdue book:\n{book.Title}\nDays late: {(DaysTillDue(book)) * -1}\n");
+                Console.WriteLine($"Overdue item(s):\n{book.Title}\nDays late: {(DaysTillDue(book)) * -1}\n");
             }
+        }
+
+        // Set checkout period based on Item Type:
+        public int SetCheckoutPeriodByItemType(Book book)
+        {
+            if (book.ItemType == "Magazine")
+                LengthOfCheckoutPeriod = 7;
+            else if (book.ItemType == "NewReleaseBook")
+                LengthOfCheckoutPeriod = 5;
+            else if (book.ItemType == "Book")
+                LengthOfCheckoutPeriod = 14;
+            else
+                Console.WriteLine("Unrecognized Type");
+
+            return LengthOfCheckoutPeriod;
         }
 
         public void NextDay() => CurrentDay++;

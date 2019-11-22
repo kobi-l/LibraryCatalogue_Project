@@ -29,130 +29,130 @@ namespace LibraryCatalog
 
 		#region XML FILE
 
-        // using XmlReader ???
-        public static Dictionary<string, string> GetBooksUsingXmlReader()
-        {
-            var newDictionary = new Dictionary<string, string>();
+		// using XmlReader ???
+		public static Dictionary<string, string> GetBooksUsingXmlReader()
+		{
+			var newDictionary = new Dictionary<string, string>();
 
-            var readXML = XmlReader.Create(@"C:\WorkSpace\LibraryCatalogue.xml");
+			var readXML = XmlReader.Create(@"C:\WorkSpace\LibraryCatalogue.xml");
 
-            string key, value;
-            while (readXML.Read())
-            {
-                switch (readXML.Name.ToString())
-                {
-                    case "ISBN":
-                        key = readXML.ReadString();
-                        break;
-                    case "Title":
-                        value = readXML.ReadString();
-                        break;
-                }
-            }
-            //newDictionary.Add(key, value);
+			string key, value;
+			while (readXML.Read())
+			{
+				switch (readXML.Name.ToString())
+				{
+					case "ISBN":
+						key = readXML.ReadString();
+						break;
+					case "Title":
+						value = readXML.ReadString();
+						break;
+				}
+			}
+			//newDictionary.Add(key, value);
 
-            return newDictionary;
-        }
+			return newDictionary;
+		}
 
-        // using XmlDocument ??? 
-        public static Dictionary<string, Book> GetBooksUsingXmlDocument()
-        {
-            var newDictionary = new Dictionary<string, Book>();
+		// using XmlDocument ??? 
+		public static Dictionary<string, Book> GetBooksUsingXmlDocument()
+		{
+			var newDictionary = new Dictionary<string, Book>();
 
-            XmlDocument doc = new XmlDocument();
-            doc.Load(@"C:\WorkSpace\LibraryCatalogue.xml");
+			XmlDocument doc = new XmlDocument();
+			doc.Load(@"C:\WorkSpace\LibraryCatalogue.xml");
 
-            XmlNode root = doc.SelectSingleNode("LibraryItems");
-            XmlNodeList node = root.SelectNodes("Item");
+			XmlNode root = doc.SelectSingleNode("LibraryItems");
+			XmlNodeList node = root.SelectNodes("Item");
 
-            foreach (XmlNode item in node)
-                newDictionary.Add(item.ChildNodes[0].InnerText, new Book((item.ChildNodes[2].InnerText), (item.ChildNodes[1].InnerText)));
+			foreach (XmlNode item in node)
+				newDictionary.Add(item.ChildNodes[0].InnerText, new Book((item.ChildNodes[2].InnerText), (item.ChildNodes[1].InnerText)));
 
-            // write to console
-            //foreach (var book in newDictionary)
-            //{
-            //    if (book.Value.ItemType == "NewReleaseBook")
-            //        Console.WriteLine($"New Release Books: {book.Key} - {book.Value.Title}");
+			// write to console
+			//foreach (var book in newDictionary)
+			//{
+			//    if (book.Value.ItemType == "NewReleaseBook")
+			//        Console.WriteLine($"New Release Books: {book.Key} - {book.Value.Title}");
 
-            //    if (book.Value.ItemType == "Magazine")
-            //        Console.WriteLine($"Magazines: {book.Key} - {book.Value.Title}");
+			//    if (book.Value.ItemType == "Magazine")
+			//        Console.WriteLine($"Magazines: {book.Key} - {book.Value.Title}");
 
-            //    if (book.Value.ItemType == "Book")
-            //        Console.WriteLine($"Books: {book.Key} - {book.Value.Title}");
-            //    Console.Write(Environment.NewLine);
-            //}
+			//    if (book.Value.ItemType == "Book")
+			//        Console.WriteLine($"Books: {book.Key} - {book.Value.Title}");
+			//    Console.Write(Environment.NewLine);
+			//}
 
-            return newDictionary;
-        }
+			return newDictionary;
+		}
 
-        // using XElement ???
-        public static Dictionary<string, string> GetBooksUsingXElement()
-        {
-            var libraryItems = XElement.Load(@"C:\WorkSpace\LibraryCatalogue.xml").Elements("Items").ToString();
-            var newDictionary = new Dictionary<string, string>();
+		// using XElement ???
+		public static Dictionary<string, string> GetBooksUsingXElement()
+		{
+			var libraryItems = XElement.Load(@"C:\WorkSpace\LibraryCatalogue.xml").Elements("Items").ToString();
+			var newDictionary = new Dictionary<string, string>();
 
-            string key, value;
+			string key, value;
 
-            foreach (var element in libraryItems)
-            {
-                var elements = XElement.Parse(libraryItems);
+			foreach (var element in libraryItems)
+			{
+				var elements = XElement.Parse(libraryItems);
 
-                key = elements.Attribute("ISBN").Value;
-                value = elements.Attribute("Title").Value;
-                newDictionary.Add(key, value);
-            }
+				key = elements.Attribute("ISBN").Value;
+				value = elements.Attribute("Title").Value;
+				newDictionary.Add(key, value);
+			}
 
-            foreach (var book in newDictionary)
-            {
-                Console.WriteLine($"{book.Key}: {book.Value}");
-            }
-
-
-            return newDictionary;
-        }
-
-        // using XDocument ???
-        public static Dictionary<string, string> GetBooksXDocument()
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(@"C:\WorkSpace\LibraryCatalogue.xml");
-
-            var d = new Dictionary<string, string>();
-
-            foreach (XmlNode n in doc)
-            {
-                d.Add(n.Attributes.GetNamedItem("ISBN").Value, n.Attributes.GetNamedItem("Title").Value);
-            }
-
-            foreach (var item in d)
-            {
-                Console.WriteLine($"{item.Key}: {item.Value}");
-            }
-
-            return d;
-        }
+			foreach (var book in newDictionary)
+			{
+				Console.WriteLine($"{book.Key}: {book.Value}");
+			}
 
 
-        public static void ReadFromXML()
-        {
-            var readXML = XmlReader.Create(@"C:\WorkSpace\LibraryCatalogue.xml");
-            while (readXML.Read())
-            {
-                switch (readXML.Name.ToString())
-                {
-                    case "ISBN":
-                        Console.WriteLine("ISBN: " + readXML.ReadString());
-                        break;
-                    case "Type":
-                        Console.WriteLine("Type: " + readXML.ReadString());
-                        break;
-                    case "Title":
-                        Console.WriteLine("Title: " + readXML.ReadString());
-                        break;
-                }
-            }
-        }
+			return newDictionary;
+		}
 
-        #endregion
+		// using XDocument ???
+		public static Dictionary<string, string> GetBooksXDocument()
+		{
+			XmlDocument doc = new XmlDocument();
+			doc.LoadXml(@"C:\WorkSpace\LibraryCatalogue.xml");
+
+			var d = new Dictionary<string, string>();
+
+			foreach (XmlNode n in doc)
+			{
+				d.Add(n.Attributes.GetNamedItem("ISBN").Value, n.Attributes.GetNamedItem("Title").Value);
+			}
+
+			foreach (var item in d)
+			{
+				Console.WriteLine($"{item.Key}: {item.Value}");
+			}
+
+			return d;
+		}
+
+
+		public static void ReadFromXML()
+		{
+			var readXML = XmlReader.Create(@"C:\WorkSpace\LibraryCatalogue.xml");
+			while (readXML.Read())
+			{
+				switch (readXML.Name.ToString())
+				{
+					case "ISBN":
+						Console.WriteLine("ISBN: " + readXML.ReadString());
+						break;
+					case "Type":
+						Console.WriteLine("Type: " + readXML.ReadString());
+						break;
+					case "Title":
+						Console.WriteLine("Title: " + readXML.ReadString());
+						break;
+				}
+			}
+		}
+
+		#endregion
 	}
 }
