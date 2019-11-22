@@ -27,7 +27,6 @@ namespace LibraryCatalogueProject
         public LibraryCatalogue(Dictionary<string, Book> collection) : this(collection, DefaultLengthOfCheckoutPeriod, 
             DefaultInitialLateFee, DefaultFeePerLateDay)
         {
-            //this.BookCollection = collection;
         }
 
         // Constructor: 
@@ -43,6 +42,8 @@ namespace LibraryCatalogueProject
         #endregion
 
         #region METHODS
+
+        // Method to check book availability
         public bool CheckBookAvailability(string bookTitle) 
         { 
             if (BookCollection.TryGetValue(bookTitle, out Book book)) 
@@ -61,6 +62,7 @@ namespace LibraryCatalogueProject
             return false; 
         }    
         
+        // Method to check out a book
         public Book CheckOutBook(string title, string customer) 
         { 
             if (BookCollection.TryGetValue(title, out Book book)) 
@@ -74,6 +76,7 @@ namespace LibraryCatalogueProject
                 return null; 
         }
 
+        // Method to return a book
         public void ReturnBook(string title)
         {
             if (!BookCollection.TryGetValue(title, out Book book)) // <--- was throwing exception
@@ -94,6 +97,7 @@ namespace LibraryCatalogueProject
             book.SetIsCheckedOut(false, -1, null);
         }
 
+        // Method book alrady checked out
         public void BookAlreadyCheckedOut(Book book)
         {
             Console.WriteLine($"Sorry, '{book.Title}' book has been already checked out! " +
@@ -101,19 +105,12 @@ namespace LibraryCatalogueProject
         }
 
 
-
         // Method to get a list of books customer has: 
-        private List<Book> BooksListByCustomer(string customerName)
-        {
-            return BookCollection.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
-        }
+        private List<Book> BooksListByCustomer(string customerName) => BookCollection.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
 
 
         // Method to get Days till books are due:
-        private int DaysTillDue(Book book)
-        {
-            return (CurrentDay - (book.DayCheckedOut + LengthOfCheckoutPeriod)) * -1;
-        }
+        private int DaysTillDue(Book book) => (CurrentDay - (book.DayCheckedOut + LengthOfCheckoutPeriod)) * -1;
 
 
         // Checked out books by Customer Name, and when books are due:
@@ -141,15 +138,9 @@ namespace LibraryCatalogueProject
             }
         }
 
-        public void NextDay()
-        {
-            CurrentDay++;
-        }
+        public void NextDay() => CurrentDay++;
 
-        public void SetDay(int day)
-        {
-            CurrentDay = day;
-        }
+        public void SetDay(int day) => CurrentDay = day;
         #endregion
     }
 }
