@@ -35,9 +35,6 @@ namespace LibraryCatalogueProject
             WhoWasItCheckeoutTo = customer;
         }
 
-        private void SetDayCheckedOut(int day)
-        {
-            this.DayCheckedOut = day;
-        }
+        private void SetDayCheckedOut(int day) => this.DayCheckedOut = day;
     }
 }

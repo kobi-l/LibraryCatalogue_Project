@@ -16,6 +16,7 @@ namespace LibraryCatalogueProject
         public double InitialLateFee { get; set; }
         public double FeePerLateDay { get; set; }
 
+
         const int DefaultLengthOfCheckoutPeriod = 7;
         const double DefaultInitialLateFee = 0.50;
         const double DefaultFeePerLateDay = 1.00;
