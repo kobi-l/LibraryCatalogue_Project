@@ -14,7 +14,7 @@ namespace LibraryCatalogueProject
         public int PageCount { get; set; }
         public int ISBN { get; set; }
         public bool IsCheckedOut { get; set; }
-        public int DayCheckedOut { get; set; } = -1;
+        public DateTime? DayCheckedOut { get; set; } = null;
         public string WhoWasItCheckeoutTo { get; set; }
 
         // Constructor:
@@ -28,13 +28,13 @@ namespace LibraryCatalogueProject
         }
 
         // Methods 
-        public void SetIsCheckedOut(Boolean newIsCheckedOut, int currentDayCheckedOut, string customer)
+        public void SetIsCheckedOut(Boolean newIsCheckedOut, DateTime? currentDayCheckedOut, string customer)
         {
             IsCheckedOut = newIsCheckedOut;
             SetDayCheckedOut(currentDayCheckedOut);
             WhoWasItCheckeoutTo = customer;
         }
 
-        private void SetDayCheckedOut(int day) => this.DayCheckedOut = day;
+        private void SetDayCheckedOut(DateTime? day) => this.DayCheckedOut = day;
     }
 }

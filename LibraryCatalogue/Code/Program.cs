@@ -86,7 +86,7 @@ namespace LibraryCatalogueProject
             Console.WriteLine("*****************");
 
             // Add Days:
-            booksLibrary.SetDay(8);
+            booksLibrary.SetDay(DateTime.Today.AddDays(6));
 
             // Get book customer has:
             Console.WriteLine("Customer books: ");

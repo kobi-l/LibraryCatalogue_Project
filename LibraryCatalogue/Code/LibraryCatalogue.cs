@@ -11,27 +11,27 @@ namespace LibraryCatalogueProject
     {
         #region PROPERTIES
         public Dictionary<string, Book> BookCollection { get; set; }
-        public int CurrentDay { get; set; }
-        public int LengthOfCheckoutPeriod { get; set; }
+        public DateTime CurrentDay { get; set; } = DateTime.Today; // <-- we use DateTime with dates
+        public TimeSpan LengthOfCheckoutPeriod { get; set; } // <-- we use TimeSpan for time interval
         public double InitialLateFee { get; set; }
         public double FeePerLateDay { get; set; }
 
 
-        const int DefaultLengthOfCheckoutPeriod = 7;
+        static readonly TimeSpan DefaultLengthOfCheckoutPeriod = TimeSpan.FromDays(7);
         const double DefaultInitialLateFee = 0.50;
         const double DefaultFeePerLateDay = 1.00;
         #endregion
 
         #region CONSTRACTORS
 
-        // Constructor:
-        public LibraryCatalogue(Dictionary<string, Book> collection) : this(collection, DefaultLengthOfCheckoutPeriod, 
+        //Constructor:
+        public LibraryCatalogue(Dictionary<string, Book> collection) : this(collection, DefaultLengthOfCheckoutPeriod,
             DefaultInitialLateFee, DefaultFeePerLateDay)
         {
         }
 
         // Constructor: 
-        public LibraryCatalogue(Dictionary<string, Book> collection, int lengthOfCheckoutPeriod, 
+        public LibraryCatalogue(Dictionary<string, Book> collection, TimeSpan lengthOfCheckoutPeriod, 
             double initialLateFee, double feePerLateDay)
         {
             BookCollection = collection; //<-- this gets passed in to the other constructor.
@@ -87,15 +87,15 @@ namespace LibraryCatalogueProject
             }
 
             var daysLate = CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book));
-            if (daysLate > 0)
+            if (daysLate > TimeSpan.Zero) // <-- '0' int is TimeSpan.Zero when working with dates
             {
-                Console.WriteLine($"You owe the library ${InitialLateFee + daysLate * FeePerLateDay} because " +
+                Console.WriteLine($"You owe the library ${InitialLateFee + daysLate.Value.TotalDays * FeePerLateDay} because " +
                     $"'{book.Title}' is {daysLate} days overdue.");
             }
       
             Console.WriteLine("Item returned. Thank you!\n");
 
-            book.SetIsCheckedOut(false, -1, null);
+            book.SetIsCheckedOut(false, null, null);
         }
 
         // Method book alrady checked out
@@ -111,7 +111,7 @@ namespace LibraryCatalogueProject
 
 
         // Method to get Days till books are due:
-        private int DaysTillDue(Book book) => (CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book))) * -1;
+        private int DaysTillDue(Book book) => (CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book))).Value.Days * -1;
 
 
         // Checked out books by Customer Name, and when books are due:
@@ -140,23 +140,23 @@ namespace LibraryCatalogueProject
         }
 
         // Set checkout period based on Item Type:
-        public int SetCheckoutPeriodByItemType(Book book)
+        public TimeSpan SetCheckoutPeriodByItemType(Book book)
         {
             if (book.ItemType == "Magazine")
-                LengthOfCheckoutPeriod = 7;
+                LengthOfCheckoutPeriod = TimeSpan.FromDays(7);
             else if (book.ItemType == "NewReleaseBook")
-                LengthOfCheckoutPeriod = 5;
+                LengthOfCheckoutPeriod = TimeSpan.FromDays(5);
             else if (book.ItemType == "Book")
-                LengthOfCheckoutPeriod = 14;
+                LengthOfCheckoutPeriod = TimeSpan.FromDays(14);
             else
                 Console.WriteLine("Unrecognized Type");
 
             return LengthOfCheckoutPeriod;
         }
 
-        public void NextDay() => CurrentDay++;
+        public void NextDay() => CurrentDay.AddDays(1);
 
-        public void SetDay(int day) => CurrentDay = day;
+        public void SetDay(DateTime day) => CurrentDay = day;
         #endregion
     }
 }
