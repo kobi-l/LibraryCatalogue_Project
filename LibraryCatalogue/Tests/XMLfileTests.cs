@@ -54,15 +54,45 @@ namespace LibraryCatalogueProject.Tests
         }
 
 		[TestMethod]
-		public void Test3()
+		public void LibraryItemsHave_ItemType_Book()
 		{
-			//Arrange
+            //Arrange
+            var libraryCatalogue = new LibraryCatalogue(FakeLibrary());
 
+            //Act
+            var bookType = libraryCatalogue.BookCollection["48039480"].ItemType;
+            var expectedBook = "Book";
 
-			//Act
+            //Assert
+            Assert.AreEqual(expectedBook, bookType);
+        }
 
+        [TestMethod]
+        public void LibraryItemsHave_ItemType_Magazine()
+        {
+            //Arrange
+            var libraryCatalogue = new LibraryCatalogue(FakeLibrary());
 
-			//Assert
-		}
-	}
+            //Act
+            var bookType = libraryCatalogue.BookCollection["50000004"].ItemType;
+            var expectedBook = "Magazine";
+
+            //Assert
+            Assert.AreEqual(expectedBook, bookType);
+        }
+
+        [TestMethod]
+        public void LibraryItemsHave_ItemType_NewReleaseBook()
+        {
+            //Arrange
+            var libraryCatalogue = new LibraryCatalogue(FakeLibrary());
+
+            //Act
+            var bookType = libraryCatalogue.BookCollection["70000015"].ItemType;
+            var expectedBook = "NewReleaseBook";
+
+            //Assert
+            Assert.AreEqual(expectedBook, bookType);
+        }
+    }
 }

@@ -90,7 +90,7 @@ namespace LibraryCatalogueProject
             if (daysLate > TimeSpan.Zero) // <-- '0' int is TimeSpan.Zero when working with dates
             {
                 Console.WriteLine($"You owe the library ${InitialLateFee + daysLate.Value.TotalDays * FeePerLateDay} because " +
-                    $"'{book.Title}' is {daysLate} days overdue.");
+                    $"'{book.Title}' is {daysLate.Value.TotalDays} days overdue.");
             }
       
             Console.WriteLine("Item returned. Thank you!\n");

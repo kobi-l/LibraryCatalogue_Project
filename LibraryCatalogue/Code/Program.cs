@@ -73,7 +73,7 @@ namespace LibraryCatalogueProject
             var customer = new Customer("John", "Smith");
 
             // Checking out books:
-            var bookName = "50000003"; // Magazine --> "Girl's World"
+            var bookName = "500000035"; // Magazine --> "Girl's World"
             CheckoutBook(customer, booksLibrary, bookName);
             Console.WriteLine("*****************");
 

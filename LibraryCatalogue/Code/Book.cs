@@ -16,6 +16,8 @@ namespace LibraryCatalogueProject
         public bool IsCheckedOut { get; set; }
         public DateTime? DayCheckedOut { get; set; } = null;
         public string WhoWasItCheckeoutTo { get; set; }
+        public int BookQuantity { get; set; }
+
 
         // Constructor:
         public Book(string bookTitle, string itemType)
@@ -33,6 +35,7 @@ namespace LibraryCatalogueProject
             IsCheckedOut = newIsCheckedOut;
             SetDayCheckedOut(currentDayCheckedOut);
             WhoWasItCheckeoutTo = customer;
+            BookQuantity--;
         }
 
         private void SetDayCheckedOut(DateTime? day) => this.DayCheckedOut = day;
