@@ -97,6 +97,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\LibraryCatalogue_AbstractClass.cs" />
     <Compile Include="Code\Book.cs" />
     <Compile Include="Code\Customer.cs" />
     <Compile Include="Code\ICustomer.cs" />

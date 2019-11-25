@@ -1,9 +1,6 @@
-﻿using LibraryCatalogueProject;
-using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Xml;
-using System.Xml.Linq;
 
 namespace LibraryCatalogueProject
 {
@@ -23,7 +20,8 @@ namespace LibraryCatalogueProject
             XmlNodeList node = root.SelectNodes("Item");
 
             foreach (XmlNode item in node)
-                newDictionary.Add(item.ChildNodes[0].InnerText, new Book((item.ChildNodes[2].InnerText), (item.ChildNodes[1].InnerText)));
+                newDictionary.Add(item.ChildNodes[0].InnerText, new Book((item.ChildNodes[2].InnerText), 
+                    (item.ChildNodes[1].InnerText), (Int32.Parse(item.ChildNodes[3].InnerText))));
 
             // write to console
             //foreach (var book in newDictionary)
@@ -76,6 +74,12 @@ namespace LibraryCatalogueProject
             var bookName = "500000035"; // Magazine --> "Girl's World"
             CheckoutBook(customer, booksLibrary, bookName);
             Console.WriteLine("*****************");
+
+            bookName = "70000011"; // NewReleaseBook --> "The Girl Who Lived Twice"
+            CheckoutBook(customer, booksLibrary, bookName);
+            Console.WriteLine("*****************");
+
+            booksLibrary.SetDay(DateTime.Today.AddDays(2));
 
             bookName = "70000011"; // NewReleaseBook --> "The Girl Who Lived Twice"
             CheckoutBook(customer, booksLibrary, bookName);

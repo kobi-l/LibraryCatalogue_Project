@@ -20,11 +20,12 @@ namespace LibraryCatalogueProject
 
 
         // Constructor:
-        public Book(string bookTitle, string itemType)
+        public Book(string bookTitle, string itemType, int bookQuantity)
         {
             Title = bookTitle;
             IsCheckedOut = false;
             ItemType = itemType;
+            BookQuantity = bookQuantity;
             //PageCount = bookPageCount;
             //ISBN = bookISBN;
         }
