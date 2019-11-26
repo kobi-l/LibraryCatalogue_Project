@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCatalogueProject
 {
-    public class Book
+    public class LibraryItem
     {
         // Properties: 
         public string Title { get; set; }
@@ -20,7 +20,7 @@ namespace LibraryCatalogueProject
 
 
         // Constructor:
-        public Book(string bookTitle, string itemType, int bookQuantity)
+        public LibraryItem(string bookTitle, string itemType, int bookQuantity)
         {
             Title = bookTitle;
             IsCheckedOut = false;

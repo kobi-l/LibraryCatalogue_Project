@@ -7,7 +7,7 @@ namespace LibraryCatalog.Code
 {
     public class LibraryCatalogue_AbstractClass : ILibraryCatalogue
     {
-        public Dictionary<string, Book> BookCollection { get; set; }
+        public Dictionary<string, LibraryItem> BookCollection { get; set; }
         public DateTime CurrentDay { get; set; } = DateTime.Today;
         public TimeSpan LengthOfCheckoutPeriod { get; set; }
         public double InitialLateFee { get; set; }
@@ -17,7 +17,7 @@ namespace LibraryCatalog.Code
         public const double DefaultInitialLateFee = 0.50;
         public const double DefaultFeePerLateDay = 1.00;
 
-        public void BookAlreadyCheckedOut(Book book)
+        public void BookAlreadyCheckedOut(LibraryItem book)
         {
             // number of days if would be back:
             Console.WriteLine($"Sorry, '{book.Title}' book had been taken! " +
@@ -28,11 +28,11 @@ namespace LibraryCatalog.Code
             //    $"It should be back on {(book.DayCheckedOut + SetCheckoutPeriodByItemType(book)).Value.ToString("dd/MM/yyyy")} days.\n");
         }
 
-        public List<Book> BooksListByCustomer(string customerName) => BookCollection.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
+        public List<LibraryItem> BooksListByCustomer(string customerName) => BookCollection.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
 
         public bool CheckBookAvailability(string bookTitle)
         {
-            if (BookCollection.TryGetValue(bookTitle, out Book book))
+            if (BookCollection.TryGetValue(bookTitle, out LibraryItem book))
             {
                 if (book.IsCheckedOut)
                 {
@@ -48,9 +48,9 @@ namespace LibraryCatalog.Code
             return false;
         }
 
-        public Book CheckOutBook(string title, string customer)
+        public LibraryItem CheckOutBook(string title, string customer)
         {
-            if (BookCollection.TryGetValue(title, out Book book))
+            if (BookCollection.TryGetValue(title, out LibraryItem book))
             {
                 book.SetIsCheckedOut(true, CurrentDay, customer);
                 Console.WriteLine($"You just checked out '{book.Title}' {book.ItemType.ToLower()}. " +
@@ -72,7 +72,7 @@ namespace LibraryCatalog.Code
             }
         }
 
-        public int DaysTillDue(Book book) => (CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book))).Value.Days * -1;
+        public int DaysTillDue(LibraryItem book) => (CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book))).Value.Days * -1;
 
         public void NextDay() => CurrentDay.AddDays(1);
 
@@ -90,7 +90,7 @@ namespace LibraryCatalog.Code
 
         public void ReturnBook(string title)
         {
-            if (!BookCollection.TryGetValue(title, out Book book)) // <--- was throwing exception
+            if (!BookCollection.TryGetValue(title, out LibraryItem book)) // <--- was throwing exception
             {
                 Console.WriteLine("This book doesn't belong to out library.\n");
                 return;
@@ -108,7 +108,7 @@ namespace LibraryCatalog.Code
             book.SetIsCheckedOut(false, null, null);
         }
 
-        public TimeSpan SetCheckoutPeriodByItemType(Book book)
+        public TimeSpan SetCheckoutPeriodByItemType(LibraryItem book)
         {
             if (book.ItemType == "Magazine")
                 LengthOfCheckoutPeriod = TimeSpan.FromDays(7);

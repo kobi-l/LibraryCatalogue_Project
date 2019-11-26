@@ -7,13 +7,13 @@ namespace LibraryCatalogueProject
     public class LibraryCatalogue : LibraryCatalogue_AbstractClass
     {
         // Constructor:
-        public LibraryCatalogue(Dictionary<string, Book> collection) : this(collection, DefaultLengthOfCheckoutPeriod,
+        public LibraryCatalogue(Dictionary<string, LibraryItem> collection) : this(collection, DefaultLengthOfCheckoutPeriod,
             DefaultInitialLateFee, DefaultFeePerLateDay)
         {
         }
 
         // Constructor: 
-        public LibraryCatalogue(Dictionary<string, Book> collection, TimeSpan lengthOfCheckoutPeriod, 
+        public LibraryCatalogue(Dictionary<string, LibraryItem> collection, TimeSpan lengthOfCheckoutPeriod, 
             double initialLateFee, double feePerLateDay)
         {
             BookCollection = collection; //<-- this gets passed in to the other constructor.

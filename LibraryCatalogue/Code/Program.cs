@@ -9,9 +9,9 @@ namespace LibraryCatalogueProject
         #region XML FILE
 
         // using XmlDocument 
-        public static Dictionary<string, Book> GetBooksUsingXmlDocument()
+        public static Dictionary<string, LibraryItem> GetBooksUsingXmlDocument()
         {
-            var newDictionary = new Dictionary<string, Book>();
+            var newDictionary = new Dictionary<string, LibraryItem>();
 
             XmlDocument doc = new XmlDocument();
             doc.Load(@"C:\WorkSpace\LibraryCatalogue.xml");
@@ -20,7 +20,7 @@ namespace LibraryCatalogueProject
             XmlNodeList node = root.SelectNodes("Item");
 
             foreach (XmlNode item in node)
-                newDictionary.Add(item.ChildNodes[0].InnerText, new Book((item.ChildNodes[2].InnerText), 
+                newDictionary.Add(item.ChildNodes[0].InnerText, new LibraryItem((item.ChildNodes[2].InnerText), 
                     (item.ChildNodes[1].InnerText), (Int32.Parse(item.ChildNodes[3].InnerText))));
 
             // write to console
