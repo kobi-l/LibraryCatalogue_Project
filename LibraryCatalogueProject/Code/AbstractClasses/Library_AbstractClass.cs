@@ -10,7 +10,6 @@ namespace LibraryCatalogueProject
     {
         public Dictionary<string, ILibraryItem> LibraryCatalogue { get; set; }
         public DateTime CurrentDay { get; set; } = DateTime.Today;
-        //public TimeSpan LengthOfCheckoutPeriod { get; set; }
         public double InitialLateFee { get; set; }
         public double FeePerLateDay { get; set; }
 
@@ -18,7 +17,7 @@ namespace LibraryCatalogueProject
         public const double DefaultInitialLateFee = 0.50;
         public const double DefaultFeePerLateDay = 1.00;
 
-        public void BookAlreadyCheckedOut(ILibraryItem book)
+        public void ItemAlreadyCheckedOut(ILibraryItem book)
         {
             // number of days if would be back:
             Console.WriteLine($"Sorry, '{book.Title}' book had been taken! " +
@@ -29,9 +28,9 @@ namespace LibraryCatalogueProject
             //    $"It should be back on {(book.DayCheckedOut + SetCheckoutPeriodByItemType(book)).Value.ToString("dd/MM/yyyy")} days.\n");
         }
 
-        public List<ILibraryItem> BooksListByCustomer(string customerName) => LibraryCatalogue.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
+        public List<ILibraryItem> ItemsListByCustomer(string customerName) => LibraryCatalogue.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
 
-        public bool CheckBookAvailability(string bookTitle)
+        public bool CheckItemAvailability(string bookTitle)
         {
             if (LibraryCatalogue.TryGetValue(bookTitle, out ILibraryItem book))
             {
@@ -51,7 +50,7 @@ namespace LibraryCatalogueProject
             return false;
         }
 
-        public ILibraryItem CheckOutBook(string title, string customer)
+        public ILibraryItem CheckOutAnItem(string title, string customer)
         {
             if (LibraryCatalogue.TryGetValue(title, out ILibraryItem book))
             {
@@ -65,9 +64,9 @@ namespace LibraryCatalogueProject
                 return null;
         }
 
-        public void CustomerBooks(string customerName)
+        public void CustomerItems(string customerName)
         {
-            var customerBooks = BooksListByCustomer(customerName);
+            var customerBooks = ItemsListByCustomer(customerName);
 
             foreach (var book in customerBooks)
             {
@@ -79,19 +78,19 @@ namespace LibraryCatalogueProject
 
         public void NextDay() => CurrentDay.AddDays(1);
 
-        public void OverdueBooksByCustomerName(string customerName)
+        public void OverdueItemsByCustomerName(string customerName)
         {
-            var customerBooks = BooksListByCustomer(customerName);
+            var customerBooks = ItemsListByCustomer(customerName);
 
             var overdueBooks = customerBooks.Where(b => DaysTillDue(b) <= 0);
 
             foreach (var book in overdueBooks)
             {
-                Console.WriteLine($"Overdue item(s):\n{book.ItemType}: '{book.Title}'\nDays late: {(DaysTillDue(book)) * -1}\n");
+                Console.WriteLine($"'{book.Title}'\nDays late: {(DaysTillDue(book)) * -1}\n");
             }
         }
 
-        public void ReturnBook(string title)
+        public void ReturnAnItem(string title)
         {
             if (!LibraryCatalogue.TryGetValue(title, out ILibraryItem book)) // <--- was throwing exception
             {
@@ -110,20 +109,6 @@ namespace LibraryCatalogueProject
 
             book.SetIsCheckedOut(false, null, null);
         }
-
-        //public TimeSpan SetCheckoutPeriodByItemType(ILibraryItem book)
-        //{
-        //    if (book.ItemType == "Magazine")
-        //        LengthOfCheckoutPeriod = TimeSpan.FromDays(7);
-        //    else if (book.ItemType == "NewReleaseBook")
-        //        LengthOfCheckoutPeriod = TimeSpan.FromDays(5);
-        //    else if (book.ItemType == "Book")
-        //        LengthOfCheckoutPeriod = TimeSpan.FromDays(14);
-        //    else
-        //        Console.WriteLine("Unrecognized Type");
-
-        //    return LengthOfCheckoutPeriod;
-        //}
 
         public void SetDay(DateTime day) => CurrentDay = day;
     }

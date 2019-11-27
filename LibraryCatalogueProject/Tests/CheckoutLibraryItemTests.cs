@@ -35,7 +35,7 @@ namespace LibraryCatalog.Tests
             var title = "48039480";
             var customer = "Tom";
 
-            checkoutBook.CheckOutBook(title, customer);
+            checkoutBook.CheckOutAnItem(title, customer);
 
             //// Act
             var expected = $"You just checked out '{title}'";

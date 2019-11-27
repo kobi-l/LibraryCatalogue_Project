@@ -33,7 +33,7 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var libraryCatalogue = new Library(FakeLibrary());
-            libraryCatalogue.CheckBookAvailability("50000006");
+            libraryCatalogue.CheckItemAvailability("50000006");
 
             //// Act
             var expected = "We have 'Animal Tales'!";
@@ -48,7 +48,7 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var libraryCatalogue = new Library(FakeLibrary());
-            libraryCatalogue.CheckBookAvailability("500000066");
+            libraryCatalogue.CheckItemAvailability("500000066");
 
             //// Act
             var expected = "Sorry, we don't have '500000066' book.";

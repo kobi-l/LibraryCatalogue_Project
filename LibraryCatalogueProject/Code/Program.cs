@@ -8,40 +8,6 @@ namespace LibraryCatalogueProject
     class Program
     {
         #region XML FILE
-
-        // using XmlDocument 
-        //public static Dictionary<string, ILibraryItem> GetBooksUsingXmlDocument()
-        //{
-        //    var newDictionary = new Dictionary<string, ILibraryItem>();
-
-        //    XmlDocument doc = new XmlDocument();
-        //    doc.Load(@"C:\WorkSpace\LibraryCatalogue.xml");
-
-        //    XmlNode root = doc.SelectSingleNode("LibraryItems");
-        //    XmlNodeList node = root.SelectNodes("Item");
-
-        //    foreach (XmlNode item in node)
-        //        newDictionary.Add(item.ChildNodes[0].InnerText, new LibraryItem_AbstractClass((item.ChildNodes[2].InnerText), 
-        //            (item.ChildNodes[1].InnerText), (Int32.Parse(item.ChildNodes[3].InnerText))));
-
-        //    // write to console
-        //    //foreach (var book in newDictionary)
-        //    //{
-        //    //    if (book.Value.ItemType == "NewReleaseBook")
-        //    //        Console.WriteLine($"New Release Books: {book.Key} - {book.Value.Title}");
-
-        //    //    if (book.Value.ItemType == "Magazine")
-        //    //        Console.WriteLine($"Magazines: {book.Key} - {book.Value.Title}");
-
-        //    //    if (book.Value.ItemType == "Book")
-        //    //        Console.WriteLine($"Books: {book.Key} - {book.Value.Title}");
-        //    //    Console.Write(Environment.NewLine);
-        //    //}
-
-        //    return newDictionary;
-        //}
-
-        // read from XML
         public static void ReadFromXML()
         {
             var readXML = XmlReader.Create(@"C:\WorkSpace\LibraryCatalogue.xml");
@@ -95,18 +61,18 @@ namespace LibraryCatalogueProject
 
             // Get book customer has:
             Console.WriteLine("Customer books: ");
-            booksLibrary.CustomerBooks(customer.FullName);
+            booksLibrary.CustomerItems(customer.FullName);
             Console.WriteLine("*****************");
 
             // Get overdue books:
             Console.WriteLine("Overdue books: ");
-            booksLibrary.OverdueBooksByCustomerName(customer.FullName);
+            booksLibrary.OverdueItemsByCustomerName(customer.FullName);
             Console.WriteLine("*****************");
 
             // Returning books:
-            booksLibrary.ReturnBook("50000000");
-            booksLibrary.ReturnBook("70000011");
-            booksLibrary.ReturnBook("48039486");
+            booksLibrary.ReturnAnItem("50000000");
+            booksLibrary.ReturnAnItem("70000011");
+            booksLibrary.ReturnAnItem("48039486");
 
             Console.ReadLine();
         }
@@ -115,9 +81,9 @@ namespace LibraryCatalogueProject
         {
             try
             {
-                if (libraryCatalogue.CheckBookAvailability(bookName))
+                if (libraryCatalogue.CheckItemAvailability(bookName))
                 {
-                    var book = libraryCatalogue.CheckOutBook(bookName, customer.FullName);
+                    var book = libraryCatalogue.CheckOutAnItem(bookName, customer.FullName);
                 }
 
             }

@@ -12,10 +12,6 @@ namespace LibraryCatalogueProject
         {
             Title = bookTitle;
             IsCheckedOut = false;
-
-            //ISBN = isbn;
-            //LengthOfCheckoutPeriod = lengthOfCheckoutPeriod;
-            //BookQuantity = bookQuantity;
         }
 
         // Checkout period override

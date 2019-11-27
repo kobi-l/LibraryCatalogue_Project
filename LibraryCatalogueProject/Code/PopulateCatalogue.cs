@@ -7,12 +7,12 @@ namespace LibraryCatalogueProject
     public class PopulateCatalogue
     {
         // using XmlDocument 
-        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(string xmlFilePath)
+        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(string xmlFilePath) //@"C:\WorkSpace\LibraryCatalogue.xml"
         {
             var newDictionary = new Dictionary<string, ILibraryItem>();
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(xmlFilePath); //@"C:\WorkSpace\LibraryCatalogue.xml"
+            doc.Load(xmlFilePath); 
 
             XmlNode root = doc.SelectSingleNode("LibraryItems");
             XmlNodeList node = root.SelectNodes("Item");
@@ -31,7 +31,7 @@ namespace LibraryCatalogueProject
                     var magazine = CreateMagazine(item.ChildNodes[2].InnerText);
                     newDictionary.Add(isbnKey, magazine);
                 }
-                if (item.ChildNodes[1].InnerText == "NewRelease")
+                if (item.ChildNodes[1].InnerText == "NewReleaseBook")
                 {
                     var newRelease = CreateNewRelease(item.ChildNodes[2].InnerText);
                     newDictionary.Add(isbnKey, newRelease);
@@ -39,30 +39,6 @@ namespace LibraryCatalogueProject
             }
             return newDictionary;
         }
-
-        public void ReadFromXML()
-        {
-            //var readXML = XmlReader.Create(@"C:\WorkSpace\LibraryCatalogue.xml");
-            //var newDictionary = new Dictionary<string, ILibraryItem>();
-
-            //while (readXML.Read())
-            //{
-            //    switch (readXML.Name.ToString())
-            //    {
-            //        case "Book":
-            //            var book = CreateBook(item.ChildNodes[2].InnerText, TimeSpan.Parse(item.ChildNodes[3].InnerText));
-            //            newDictionary.Add(isbnKey, book);
-            //            break;
-            //        case "Magazine":
-            //            CreateMagazine(int isbn, string bookTitle, TimeSpan lengthOfCheckoutPeriod);
-            //            break;
-            //        case "NewRelease":
-            //            CreateNewRelease(int isbn, string bookTitle, TimeSpan lengthOfCheckoutPeriod);
-            //            break;
-            //    }
-            //}
-        }
-
 
         private ILibraryItem CreateBook(string bookTitle)
         {
