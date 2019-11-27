@@ -33,6 +33,7 @@ namespace LibraryCatalogueProject
         {
             // 1. Create a new library and load library catalogue
             var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"C:\WorkSpace\LibraryCatalogue.xml"));
+            //var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"C:\dev\Other Projects\Kobi\LibraryCatalogue_Project\LibraryCatalogue.xml"));
 
             // 2. Create a new customer
             var customer = new Customer("John", "Smith");
