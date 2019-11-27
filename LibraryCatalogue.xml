@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<LibraryItems> 
+<!-- LibraryItems is the ROOT ELEMENT -->
+<!-- Item is the PARENT ELEMENT for ISBN, Type and Title -->
+	<!-- BOOKS -->
+	<Item>
+		<ISBN>48039480</ISBN>
+		<Type>Book</Type>
+		<Title>Harry Potter and the Sorcerer's Stone</Title>
+		<Quantity>4</Quantity>
+	</Item>
+	<Item>
+		<ISBN>48039481</ISBN>
+		<Type>Book</Type>
+		<Title>Harry Potter and the Chamber of Secrets</Title>
+		<Quantity>3</Quantity>
+	</Item>
+	<Item>
+		<ISBN>48039482</ISBN>
+		<Type>Book</Type>
+		<Title>Harry Potter and the Prisoner of Azkaban</Title>
+		<Quantity>2</Quantity>		
+	</Item>
+	<Item>
+		<ISBN>48039483</ISBN>
+		<Type>Book</Type>
+		<Title>Harry Potter and the Goblet of Fire</Title>	
+		<Quantity>1</Quantity>
+	</Item>
+	<Item>
+		<ISBN>48039484</ISBN>
+		<Type>Book</Type>
+		<Title>Harry Potter and the Order of the Phoenix</Title>
+		<Quantity>4</Quantity>
+	</Item>
+	<Item>
+		<ISBN>48039495</ISBN>
+		<Type>Book</Type>
+		<Title>Harry Potter and the Half-Blood Prince</Title>
+		<Quantity>3</Quantity>
+	</Item>
+	<Item>
+		<ISBN>48039486</ISBN>
+		<Type>Book</Type>
+		<Title>Harry Potter and the Deathly Hallows</Title>
+		<Quantity>2</Quantity>
+	</Item>
+	<!-- MAGAZINES -->
+	<Item>
+		<ISBN>50000001</ISBN>
+		<Type>Magazine</Type>
+		<Title>Sports Illustrated Kids</Title>	
+		<Quantity>5</Quantity>
+	</Item>
+	<Item>
+		<ISBN>50000002</ISBN>
+		<Type>Magazine</Type>
+		<Title>National Geographics Kids</Title>
+		<Quantity>2</Quantity>
+	</Item>
+	<Item>
+		<ISBN>50000003</ISBN>
+		<Type>Magazine</Type>
+		<Title>Girl's World</Title>
+		<Quantity>3</Quantity>
+	</Item>
+	<Item>
+		<ISBN>50000004</ISBN>
+		<Type>Magazine</Type>
+		<Title>Encyclopedia of Life</Title>
+		<Quantity>1</Quantity>
+	</Item>
+	<Item>
+		<ISBN>50000005</ISBN>
+		<Type>Magazine</Type>
+		<Title>Highlights For Children</Title>
+		<Quantity>0</Quantity>
+	</Item>
+	<Item>
+		<ISBN>50000006</ISBN>
+		<Type>Magazine</Type>
+		<Title>Animal Tales</Title>	
+		<Quantity>3</Quantity>
+	</Item>
+	<!-- NEW RELEASES BOOKS -->
+	<Item>
+		<ISBN>70000010</ISBN>
+		<Type>NewReleaseBook</Type>
+		<Title>The Guardians</Title>
+		<Quantity>1</Quantity>
+	</Item>
+	<Item>
+		<ISBN>70000011</ISBN>
+		<Type>NewReleaseBook</Type>
+		<Title>The Girl Who Lived Twice</Title>	
+		<Quantity>3</Quantity>		
+	</Item>
+	<Item>
+		<ISBN>70000012</ISBN>
+		<Type>NewReleaseBook</Type>
+		<Title>The Turn Of the Key</Title>
+		<Quantity>2</Quantity>
+	</Item>
+	<Item>
+		<ISBN>70000013</ISBN>
+		<Type>NewReleaseBook</Type>
+		<Title>Someone We Know</Title>
+		<Quantity>3</Quantity>
+	</Item>
+	<Item>
+		<ISBN>70000014</ISBN>
+		<Type>NewReleaseBook</Type>
+		<Title>The Water Dancer</Title>	
+		<Quantity>1</Quantity>
+	</Item>
+	<Item>
+		<ISBN>70000015</ISBN>
+		<Type>NewReleaseBook</Type>
+		<Title>The Dutch House</Title>
+		<Quantity>3</Quantity>
+	</Item>	
+</LibraryItems>
