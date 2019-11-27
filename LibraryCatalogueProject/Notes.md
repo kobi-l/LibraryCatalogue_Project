@@ -9,21 +9,22 @@ namespace LibraryCatalog
 	class Notes
 	{
 	#region BOOKS LIBRARY
-		//public static Dictionary<string, Book> GetBooks()
-		//{
-		//    // Creating a dictionary using the Collection Initializer and returning it:
-		//    return new Dictionary<string, Book>()
-		//    {
-		//        { "Book 1", new Book("Harry Potter and the Sorcerer's Stone", 544, 48039485) },
-		//        { "Book 2", new Book("Harry Potter and the Chamber of Secrets", 367, 48039486)},
-		//        { "Book 3", new Book("Harry Potter and the Prisoner of Azkaban", 467, 48039487)},
-		//        { "Book 4", new Book("Harry Potter and the Goblet of Fire", 465, 48039488)},
-		//        { "Book 5", new Book("Harry Potter and the Order of the Phoenix", 433, 48039489)},
-		//        { "Book 6", new Book("Harry Potter and the Half-Blood Prince", 245, 48039410)},
-		//        { "Book 7", new Book("Harry Potter and the Deathly Hallows", 245, 48039410)}
 
-		//    };
-		//}
+		public static Dictionary<string, Book> GetBooks()
+		{
+		    // Creating a dictionary using the Collection Initializer and returning it:
+		    return new Dictionary<string, Book>()
+		    {
+		        { "Book 1", new Book("Harry Potter and the Sorcerer's Stone", 544, 48039485) },
+		        { "Book 2", new Book("Harry Potter and the Chamber of Secrets", 367, 48039486)},
+		        { "Book 3", new Book("Harry Potter and the Prisoner of Azkaban", 467, 48039487)},
+		        { "Book 4", new Book("Harry Potter and the Goblet of Fire", 465, 48039488)},
+		        { "Book 5", new Book("Harry Potter and the Order of the Phoenix", 433, 48039489)},
+		        { "Book 6", new Book("Harry Potter and the Half-Blood Prince", 245, 48039410)},
+		        { "Book 7", new Book("Harry Potter and the Deathly Hallows", 245, 48039410)}
+
+		    };
+		}
 		#endregion
 
 
@@ -69,18 +70,18 @@ namespace LibraryCatalog
 				newDictionary.Add(item.ChildNodes[0].InnerText, new Book((item.ChildNodes[2].InnerText), (item.ChildNodes[1].InnerText)));
 
 			// write to console
-			//foreach (var book in newDictionary)
-			//{
-			//    if (book.Value.ItemType == "NewReleaseBook")
-			//        Console.WriteLine($"New Release Books: {book.Key} - {book.Value.Title}");
+			foreach (var book in newDictionary)
+			{
+			    if (book.Value.ItemType == "NewReleaseBook")
+			        Console.WriteLine($"New Release Books: {book.Key} - {book.Value.Title}");
 
-			//    if (book.Value.ItemType == "Magazine")
-			//        Console.WriteLine($"Magazines: {book.Key} - {book.Value.Title}");
+			    if (book.Value.ItemType == "Magazine")
+			        Console.WriteLine($"Magazines: {book.Key} - {book.Value.Title}");
 
-			//    if (book.Value.ItemType == "Book")
-			//        Console.WriteLine($"Books: {book.Key} - {book.Value.Title}");
-			//    Console.Write(Environment.NewLine);
-			//}
+			    if (book.Value.ItemType == "Book")
+			        Console.WriteLine($"Books: {book.Key} - {book.Value.Title}");
+			    Console.Write(Environment.NewLine);
+			}
 
 			return newDictionary;
 		}
@@ -152,6 +153,47 @@ namespace LibraryCatalog
 				}
 			}
 		}
+
+
+		public TimeSpan SetCheckoutPeriodByItemType(ILibraryItem book)
+        {
+            if (book.ItemType == "Magazine")
+                LengthOfCheckoutPeriod = TimeSpan.FromDays(7);
+            else if (book.ItemType == "NewReleaseBook")
+                LengthOfCheckoutPeriod = TimeSpan.FromDays(5);
+            else if (book.ItemType == "Book")
+                LengthOfCheckoutPeriod = TimeSpan.FromDays(14);
+            else
+                Console.WriteLine("Unrecognized Type");
+
+			 return LengthOfCheckoutPeriod;
+        }
+		
+
+		public void ReadFromXML()
+        {
+            var readXML = XmlReader.Create(@"C:\WorkSpace\LibraryCatalogue.xml");
+            var newDictionary = new Dictionary<string, ILibraryItem>();
+
+            while (readXML.Read())
+            {
+				switch (readXML.Name.ToString())
+                {
+                    case "Book":
+                        var book = CreateBook(item.ChildNodes[2].InnerText, TimeSpan.Parse(item.ChildNodes[3].InnerText));
+                        newDictionary.Add(isbnKey, book);
+                        break;
+                    case "Magazine":
+                        CreateMagazine(int isbn, string bookTitle, TimeSpan lengthOfCheckoutPeriod);
+                        break;
+                    case "NewRelease":
+                        CreateNewRelease(int isbn, string bookTitle, TimeSpan lengthOfCheckoutPeriod);
+                        break;
+                }
+            }
+        }		
+
+
 
 		#endregion
 	}

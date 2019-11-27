@@ -8,7 +8,7 @@ namespace LibraryCatalogueProject
     public class PopulateCatalogue
     {
         // using XmlDocument 
-        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(string xmlFilePath) //@"C:\WorkSpace\LibraryCatalogue.xml"
+        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(string xmlFilePath)
         {
             var newDictionary = new Dictionary<string, ILibraryItem>();
 
