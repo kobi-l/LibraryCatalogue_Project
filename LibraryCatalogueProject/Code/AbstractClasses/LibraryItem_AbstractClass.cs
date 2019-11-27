@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCatalogueProject
 {
-    public class LibraryItem
+    public class LibraryItem_AbstractClass : ILibraryItem
     {
         // Properties: 
         public string Title { get; set; }
@@ -16,19 +16,8 @@ namespace LibraryCatalogueProject
         public bool IsCheckedOut { get; set; }
         public DateTime? DayCheckedOut { get; set; } = null;
         public string WhoWasItCheckeoutTo { get; set; }
+        public virtual TimeSpan LengthOfCheckoutPeriod { get; set; } = TimeSpan.FromDays(14);
         public int BookQuantity { get; set; }
-
-
-        // Constructor:
-        public LibraryItem(string bookTitle, string itemType, int bookQuantity)
-        {
-            Title = bookTitle;
-            IsCheckedOut = false;
-            ItemType = itemType;
-            BookQuantity = bookQuantity;
-            //PageCount = bookPageCount;
-            //ISBN = bookISBN;
-        }
 
         // Methods 
         public void SetIsCheckedOut(Boolean newIsCheckedOut, DateTime? currentDayCheckedOut, string customer)
@@ -39,6 +28,6 @@ namespace LibraryCatalogueProject
             BookQuantity--;
         }
 
-        private void SetDayCheckedOut(DateTime? day) => this.DayCheckedOut = day;
+        public void SetDayCheckedOut(DateTime? day) => this.DayCheckedOut = day;
     }
 }

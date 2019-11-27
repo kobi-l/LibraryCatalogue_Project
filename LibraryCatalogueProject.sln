@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29403.142
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryCatalogueProject", "LibraryCatalogue\LibraryCatalogueProject.csproj", "{E3C352CB-DF05-49F0-AADF-7022DB0245B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryCatalogueProject", "LibraryCatalogueProject\LibraryCatalogueProject.csproj", "{E3C352CB-DF05-49F0-AADF-7022DB0245B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

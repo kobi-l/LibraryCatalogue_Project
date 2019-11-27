@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LibraryCatalog.Code.CustomExceptions;
 using LibraryCatalogueProject;
 
-namespace LibraryCatalog.Code
+namespace LibraryCatalogueProject
 {
-    public class LibraryCatalogue_AbstractClass : ILibraryCatalogue
+    public class Library_AbstractClass : ILibrary
     {
-        public Dictionary<string, LibraryItem> BookCollection { get; set; }
+        public Dictionary<string, ILibraryItem> LibraryCatalogue { get; set; }
         public DateTime CurrentDay { get; set; } = DateTime.Today;
-        public TimeSpan LengthOfCheckoutPeriod { get; set; }
+        //public TimeSpan LengthOfCheckoutPeriod { get; set; }
         public double InitialLateFee { get; set; }
         public double FeePerLateDay { get; set; }
 
@@ -17,27 +18,29 @@ namespace LibraryCatalog.Code
         public const double DefaultInitialLateFee = 0.50;
         public const double DefaultFeePerLateDay = 1.00;
 
-        public void BookAlreadyCheckedOut(LibraryItem book)
+        public void BookAlreadyCheckedOut(ILibraryItem book)
         {
             // number of days if would be back:
             Console.WriteLine($"Sorry, '{book.Title}' book had been taken! " +
-                $"It should be back in {((book.DayCheckedOut + SetCheckoutPeriodByItemType(book) - DateTime.Today)).Value.Days} days.\n");
+                $"It should be back in {((book.DayCheckedOut + book.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n");
 
             // date it would be back on:
             //Console.WriteLine($"Sorry, '{book.Title}' book had been taken! " +
             //    $"It should be back on {(book.DayCheckedOut + SetCheckoutPeriodByItemType(book)).Value.ToString("dd/MM/yyyy")} days.\n");
         }
 
-        public List<LibraryItem> BooksListByCustomer(string customerName) => BookCollection.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
+        public List<ILibraryItem> BooksListByCustomer(string customerName) => LibraryCatalogue.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
 
         public bool CheckBookAvailability(string bookTitle)
         {
-            if (BookCollection.TryGetValue(bookTitle, out LibraryItem book))
+            if (LibraryCatalogue.TryGetValue(bookTitle, out ILibraryItem book))
             {
                 if (book.IsCheckedOut)
                 {
-                    BookAlreadyCheckedOut(book);
-                    return false;
+                    //BookAlreadyCheckedOut(book);
+                    throw new LibraryItemAlreadyCheckedOutException(book);
+                                       
+                    //return false;
                 }
                 Console.WriteLine($"We have '{book.Title}'!");
                 return true;
@@ -48,13 +51,13 @@ namespace LibraryCatalog.Code
             return false;
         }
 
-        public LibraryItem CheckOutBook(string title, string customer)
+        public ILibraryItem CheckOutBook(string title, string customer)
         {
-            if (BookCollection.TryGetValue(title, out LibraryItem book))
+            if (LibraryCatalogue.TryGetValue(title, out ILibraryItem book))
             {
                 book.SetIsCheckedOut(true, CurrentDay, customer);
-                Console.WriteLine($"You just checked out '{book.Title}' {book.ItemType.ToLower()}. " +
-                    $"\nNote: Please return it in {SetCheckoutPeriodByItemType(book).TotalDays} days.\n");
+                Console.WriteLine($"You just checked out '{book.Title}'. " +
+                    $"\nNote: Please return it in {book.LengthOfCheckoutPeriod.TotalDays} days.\n");
                 return book;
 
             }
@@ -72,7 +75,7 @@ namespace LibraryCatalog.Code
             }
         }
 
-        public int DaysTillDue(LibraryItem book) => (CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book))).Value.Days * -1;
+        public int DaysTillDue(ILibraryItem book) => (CurrentDay - (book.DayCheckedOut + book.LengthOfCheckoutPeriod)).Value.Days * -1;
 
         public void NextDay() => CurrentDay.AddDays(1);
 
@@ -90,13 +93,13 @@ namespace LibraryCatalog.Code
 
         public void ReturnBook(string title)
         {
-            if (!BookCollection.TryGetValue(title, out LibraryItem book)) // <--- was throwing exception
+            if (!LibraryCatalogue.TryGetValue(title, out ILibraryItem book)) // <--- was throwing exception
             {
                 Console.WriteLine("This book doesn't belong to out library.\n");
                 return;
             }
 
-            var daysLate = CurrentDay - (book.DayCheckedOut + SetCheckoutPeriodByItemType(book));
+            var daysLate = CurrentDay - (book.DayCheckedOut + book.LengthOfCheckoutPeriod);
             if (daysLate > TimeSpan.Zero) // <-- '0' int is TimeSpan.Zero when working with dates
             {
                 Console.WriteLine($"You owe the library ${InitialLateFee + daysLate.Value.TotalDays * FeePerLateDay} because " +
@@ -108,19 +111,19 @@ namespace LibraryCatalog.Code
             book.SetIsCheckedOut(false, null, null);
         }
 
-        public TimeSpan SetCheckoutPeriodByItemType(LibraryItem book)
-        {
-            if (book.ItemType == "Magazine")
-                LengthOfCheckoutPeriod = TimeSpan.FromDays(7);
-            else if (book.ItemType == "NewReleaseBook")
-                LengthOfCheckoutPeriod = TimeSpan.FromDays(5);
-            else if (book.ItemType == "Book")
-                LengthOfCheckoutPeriod = TimeSpan.FromDays(14);
-            else
-                Console.WriteLine("Unrecognized Type");
+        //public TimeSpan SetCheckoutPeriodByItemType(ILibraryItem book)
+        //{
+        //    if (book.ItemType == "Magazine")
+        //        LengthOfCheckoutPeriod = TimeSpan.FromDays(7);
+        //    else if (book.ItemType == "NewReleaseBook")
+        //        LengthOfCheckoutPeriod = TimeSpan.FromDays(5);
+        //    else if (book.ItemType == "Book")
+        //        LengthOfCheckoutPeriod = TimeSpan.FromDays(14);
+        //    else
+        //        Console.WriteLine("Unrecognized Type");
 
-            return LengthOfCheckoutPeriod;
-        }
+        //    return LengthOfCheckoutPeriod;
+        //}
 
         public void SetDay(DateTime day) => CurrentDay = day;
     }

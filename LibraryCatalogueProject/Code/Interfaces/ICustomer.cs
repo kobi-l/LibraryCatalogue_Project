@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryCatalog.Code
+namespace LibraryCatalogueProject
 {
     public interface ICustomer
     {
         string FirstName { get; }
         string LastName { get; }
-
-        //string FullName { get; set; }
+        string FullName { get; }
     }
 }

@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace LibraryCatalog.Code
+namespace LibraryCatalogueProject
 {
-    public interface ILibraryCatalogue
+    public interface ILibrary
     {
-        Dictionary<string, LibraryItem> BookCollection { get; set; }
+        Dictionary<string, ILibraryItem> LibraryCatalogue { get; set; }
         DateTime CurrentDay { get; set; }
-        TimeSpan LengthOfCheckoutPeriod { get; set; }
+        //TimeSpan LengthOfCheckoutPeriod { get; set; }
         double InitialLateFee { get; set; }
         double FeePerLateDay { get; set; }
 
@@ -18,21 +18,20 @@ namespace LibraryCatalog.Code
 
 
         // Method to check out a book
-        LibraryItem CheckOutBook(string title, string customer);
+        ILibraryItem CheckOutBook(string title, string customer);
 
         // Method to return a book
         void ReturnBook(string title);
 
         // Method book alrady checked out
-        void BookAlreadyCheckedOut(LibraryItem book);
-
+        void BookAlreadyCheckedOut(ILibraryItem book);
 
         // Method to get a list of books customer has: 
-        List<LibraryItem> BooksListByCustomer(string customerName);
+        List<ILibraryItem> BooksListByCustomer(string customerName);
 
 
         // Method to get Days till books are due:
-        int DaysTillDue(LibraryItem book);
+        int DaysTillDue(ILibraryItem book);
 
 
         // Checked out books by Customer Name, and when books are due:
@@ -43,7 +42,7 @@ namespace LibraryCatalog.Code
         void OverdueBooksByCustomerName(string customerName);
 
         // Set checkout period based on Item Type:
-        TimeSpan SetCheckoutPeriodByItemType(LibraryItem book);
+        //TimeSpan SetCheckoutPeriodByItemType(ILibraryItem book);
 
         void NextDay();
 

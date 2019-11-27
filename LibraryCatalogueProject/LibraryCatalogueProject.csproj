@@ -97,12 +97,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\LibraryCatalogue_AbstractClass.cs" />
-    <Compile Include="Code\Book.cs" />
+    <Compile Include="Code\CustomExceptions\LibraryItemAlreadyCheckedOutException.cs" />
+    <Compile Include="Code\LibraryItems\Book.cs" />
+    <Compile Include="Code\Interfaces\ILibraryItem.cs" />
+    <Compile Include="Code\AbstractClasses\Library_AbstractClass.cs" />
+    <Compile Include="Code\AbstractClasses\LibraryItem_AbstractClass.cs" />
     <Compile Include="Code\Customer.cs" />
-    <Compile Include="Code\ICustomer.cs" />
-    <Compile Include="Code\ILibraryCatalogue.cs" />
-    <Compile Include="Code\LibraryCatalogue.cs" />
+    <Compile Include="Code\Interfaces\ICustomer.cs" />
+    <Compile Include="Code\Interfaces\ILibrary.cs" />
+    <Compile Include="Code\Library.cs" />
+    <Compile Include="Code\LibraryItems\Magazine.cs" />
+    <Compile Include="Code\LibraryItems\NewRelease.cs" />
+    <Compile Include="Code\PopulateCatalogue.cs" />
     <Compile Include="Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\CheckoutLibraryItemTests.cs" />
