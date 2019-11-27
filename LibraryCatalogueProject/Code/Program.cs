@@ -1,6 +1,8 @@
 ﻿using LibraryCatalog.Code.CustomExceptions;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Xml;
 
 namespace LibraryCatalogueProject
@@ -31,8 +33,11 @@ namespace LibraryCatalogueProject
         #endregion
         public static void Main(string[] args)
         {
-            // 1. Create a new library and load library catalogue
-            var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"C:\WorkSpace\LibraryCatalogue.xml"));
+			// 1. Create a new library and load library catalogue
+			string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"../../../LibraryCatalogue.xml");
+
+			var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(path));
+			//var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"LibraryCatalogue.xml"));
             //var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"C:\dev\Other Projects\Kobi\LibraryCatalogue_Project\LibraryCatalogue.xml"));
 
             // 2. Create a new customer
