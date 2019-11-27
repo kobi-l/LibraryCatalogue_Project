@@ -8,9 +8,9 @@ namespace LibraryCatalogueProject
 {
     public class NewRelease : LibraryItem_AbstractClass
     {
-        public NewRelease(string bookTitle)
+        public NewRelease(string itemTitle)
         {
-            Title = bookTitle;
+            Title = itemTitle;
             IsCheckedOut = false;
         }
 

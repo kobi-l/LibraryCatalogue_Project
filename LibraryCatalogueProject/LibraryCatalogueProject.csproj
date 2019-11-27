@@ -107,6 +107,7 @@
     <Compile Include="Code\Interfaces\ILibrary.cs" />
     <Compile Include="Code\Library.cs" />
     <Compile Include="Code\LibraryItems\Magazine.cs" />
+    <Compile Include="Code\LibraryItems\MovieDVD.cs" />
     <Compile Include="Code\LibraryItems\NewRelease.cs" />
     <Compile Include="Code\PopulateCatalogue.cs" />
     <Compile Include="Code\Program.cs" />

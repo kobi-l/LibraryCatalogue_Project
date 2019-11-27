@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryCatalog.Code.LibraryItems;
+using System;
 using System.Collections.Generic;
 using System.Xml;
 
@@ -20,41 +21,52 @@ namespace LibraryCatalogueProject
             foreach (XmlNode item in node)
             {
                 var isbnKey = item.ChildNodes[0].InnerText;
+                var itemTitle = item.ChildNodes[2].InnerText;
 
                 if (item.ChildNodes[1].InnerText == "Book")
                 {
-                    var book = CreateBook(item.ChildNodes[2].InnerText);
+                    var book = CreateBook(itemTitle);
                     newDictionary.Add(isbnKey, book);
                 }
                 if (item.ChildNodes[1].InnerText == "Magazine")
                 {
-                    var magazine = CreateMagazine(item.ChildNodes[2].InnerText);
+                    var magazine = CreateMagazine(itemTitle);
                     newDictionary.Add(isbnKey, magazine);
                 }
                 if (item.ChildNodes[1].InnerText == "NewReleaseBook")
                 {
-                    var newRelease = CreateNewRelease(item.ChildNodes[2].InnerText);
+                    var newRelease = CreateNewRelease(itemTitle);
                     newDictionary.Add(isbnKey, newRelease);
+                }
+                if (item.ChildNodes[1].InnerText == "DVD")
+                {
+                    var newDvd = CreateDVD(itemTitle);
+                    newDictionary.Add(isbnKey, newDvd);
                 }
             }
             return newDictionary;
         }
-
-        private ILibraryItem CreateBook(string bookTitle)
+        private ILibraryItem CreateDVD(string itemTitle)
         {
-            var book = new Book(bookTitle);
+            var dvdMovie = new MovieDVD(itemTitle);
+            return dvdMovie;
+        }
+
+        private ILibraryItem CreateBook(string itemTitle)
+        {
+            var book = new Book(itemTitle);
             return book;
         }
 
-        private ILibraryItem CreateMagazine(string bookTitle)
+        private ILibraryItem CreateMagazine(string itemTitle)
         {
-            var magazine = new Magazine(bookTitle);
+            var magazine = new Magazine(itemTitle);
             return magazine;
         }
 
-        private ILibraryItem CreateNewRelease(string bookTitle)
+        private ILibraryItem CreateNewRelease(string itemTitle)
         {
-            var newRelease = new NewRelease(bookTitle);
+            var newRelease = new NewRelease(itemTitle);
             return newRelease;
         }
     }

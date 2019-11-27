@@ -17,11 +17,11 @@ namespace LibraryCatalogueProject
         public const double DefaultInitialLateFee = 0.50;
         public const double DefaultFeePerLateDay = 1.00;
 
-        public void ItemAlreadyCheckedOut(ILibraryItem book)
+        public void ItemAlreadyCheckedOut(ILibraryItem item)
         {
             // number of days if would be back:
-            Console.WriteLine($"Sorry, '{book.Title}' book had been taken! " +
-                $"It should be back in {((book.DayCheckedOut + book.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n");
+            Console.WriteLine($"Sorry, '{item.Title}' had been taken! " +
+                $"It should be back in {((item.DayCheckedOut + item.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n");
 
             // date it would be back on:
             //Console.WriteLine($"Sorry, '{book.Title}' book had been taken! " +
@@ -30,34 +30,34 @@ namespace LibraryCatalogueProject
 
         public List<ILibraryItem> ItemsListByCustomer(string customerName) => LibraryCatalogue.Values.Where(b => b.WhoWasItCheckeoutTo == customerName).ToList();
 
-        public bool CheckItemAvailability(string bookTitle)
+        public bool CheckItemAvailability(string itemTitle)
         {
-            if (LibraryCatalogue.TryGetValue(bookTitle, out ILibraryItem book))
+            if (LibraryCatalogue.TryGetValue(itemTitle, out ILibraryItem item))
             {
-                if (book.IsCheckedOut)
+                if (item.IsCheckedOut)
                 {
                     //BookAlreadyCheckedOut(book);
-                    throw new LibraryItemAlreadyCheckedOutException(book);
+                    throw new LibraryItemAlreadyCheckedOutException(item);
                                        
                     //return false;
                 }
-                Console.WriteLine($"We have '{book.Title}'!");
+                Console.WriteLine($"We have '{item.Title}'!");
                 return true;
             }
             else
-                Console.WriteLine($"Sorry, we don't have '{bookTitle}' book.\n");
+                Console.WriteLine($"Sorry, we don't have '{itemTitle}' book.\n");
 
             return false;
         }
 
         public ILibraryItem CheckOutAnItem(string title, string customer)
         {
-            if (LibraryCatalogue.TryGetValue(title, out ILibraryItem book))
+            if (LibraryCatalogue.TryGetValue(title, out ILibraryItem item))
             {
-                book.SetIsCheckedOut(true, CurrentDay, customer);
-                Console.WriteLine($"You just checked out '{book.Title}'. " +
-                    $"\nNote: Please return it in {book.LengthOfCheckoutPeriod.TotalDays} days.\n");
-                return book;
+                item.SetIsCheckedOut(true, CurrentDay, customer);
+                Console.WriteLine($"You just checked out '{item.Title}'. " +
+                    $"\nNote: Please return it in {item.LengthOfCheckoutPeriod.TotalDays} days.\n");
+                return item;
 
             }
             else
@@ -66,48 +66,48 @@ namespace LibraryCatalogueProject
 
         public void CustomerItems(string customerName)
         {
-            var customerBooks = ItemsListByCustomer(customerName);
+            var customerItems = ItemsListByCustomer(customerName);
 
-            foreach (var book in customerBooks)
+            foreach (var item in customerItems)
             {
-                Console.WriteLine(String.Join("", $"Book: {book.Title}\n", $"Due in days: {DaysTillDue(book)}\n"));
+                Console.WriteLine(String.Join("", $"Item: '{item.Title}'\n", $"Due in days: {DaysTillDue(item)}\n"));
             }
         }
 
-        public int DaysTillDue(ILibraryItem book) => (CurrentDay - (book.DayCheckedOut + book.LengthOfCheckoutPeriod)).Value.Days * -1;
+        public int DaysTillDue(ILibraryItem item) => (CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.Days * -1;
 
         public void NextDay() => CurrentDay.AddDays(1);
 
         public void OverdueItemsByCustomerName(string customerName)
         {
-            var customerBooks = ItemsListByCustomer(customerName);
+            var customerItems = ItemsListByCustomer(customerName);
 
-            var overdueBooks = customerBooks.Where(b => DaysTillDue(b) <= 0);
+            var overdueItems = customerItems.Where(b => DaysTillDue(b) <= 0);
 
-            foreach (var book in overdueBooks)
+            foreach (var item in overdueItems)
             {
-                Console.WriteLine($"'{book.Title}'\nDays late: {(DaysTillDue(book)) * -1}\n");
+                Console.WriteLine($"'{item.Title}'\nDays late: {(DaysTillDue(item)) * -1}\n");
             }
         }
 
-        public void ReturnAnItem(string title)
+        public void ReturnAnItem(string itemTitle)
         {
-            if (!LibraryCatalogue.TryGetValue(title, out ILibraryItem book)) // <--- was throwing exception
+            if (!LibraryCatalogue.TryGetValue(itemTitle, out ILibraryItem item)) // <--- was throwing exception
             {
-                Console.WriteLine("This book doesn't belong to out library.\n");
+                Console.WriteLine("This item doesn't belong to out library.\n");
                 return;
             }
 
-            var daysLate = CurrentDay - (book.DayCheckedOut + book.LengthOfCheckoutPeriod);
+            var daysLate = CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod);
             if (daysLate > TimeSpan.Zero) // <-- '0' int is TimeSpan.Zero when working with dates
             {
                 Console.WriteLine($"You owe the library ${InitialLateFee + daysLate.Value.TotalDays * FeePerLateDay} because " +
-                    $"'{book.Title}' is {daysLate.Value.TotalDays} days overdue.");
+                    $"'{item.Title}' is {daysLate.Value.TotalDays} days overdue.");
             }
 
             Console.WriteLine("Item returned. Thank you!\n");
 
-            book.SetIsCheckedOut(false, null, null);
+            item.SetIsCheckedOut(false, null, null);
         }
 
         public void SetDay(DateTime day) => CurrentDay = day;

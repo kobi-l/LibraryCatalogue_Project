@@ -4,6 +4,30 @@
 <!-- Item is the PARENT ELEMENT for ISBN, Type and Title -->
 	<!-- BOOKS -->
 	<Item>
+		<ISBN>211505DV</ISBN>
+		<Type>DVD</Type>
+		<Title>Long Shot</Title>
+		<Quantity>4</Quantity>
+	</Item>
+	<Item>
+		<ISBN>211504DV</ISBN>
+		<Type>DVD</Type>
+		<Title>Men In Black</Title>
+		<Quantity>4</Quantity>
+	</Item>
+	<Item>
+		<ISBN>211503DV</ISBN>
+		<Type>DVD</Type>
+		<Title>Pets 2</Title>
+		<Quantity>4</Quantity>
+	</Item>
+	<Item>
+		<ISBN>211502DV</ISBN>
+		<Type>DVD</Type>
+		<Title>The art of self-defense</Title>
+		<Quantity>4</Quantity>
+	</Item>
+	<Item>
 		<ISBN>48039480</ISBN>
 		<Type>Book</Type>
 		<Title>Harry Potter and the Sorcerer's Stone</Title>
