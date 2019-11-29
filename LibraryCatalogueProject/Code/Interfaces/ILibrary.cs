@@ -14,17 +14,17 @@ namespace LibraryCatalogueProject
 
 
         // Method to check book availability
-        bool CheckItemAvailability(string bookTitle);
+        bool CheckItemAvailability(string bookTitle, out string message);
 
 
         // Method to check out a book
         ILibraryItem CheckOutAnItem(string title, string customer);
 
         // Method to return a book
-        void ReturnAnItem(string title);
+        string ReturnAnItem(string title);
 
         // Method book alrady checked out
-        void ItemAlreadyCheckedOut(ILibraryItem book);
+        //void ItemAlreadyCheckedOut(ILibraryItem book);
 
         // Method to get a list of books customer has: 
         List<ILibraryItem> ItemsListByCustomer(string customerName);
@@ -35,11 +35,11 @@ namespace LibraryCatalogueProject
 
 
         // Checked out books by Customer Name, and when books are due:
-        void CustomerItems(string customerName);
+        List<string> CustomerItems(string customerName);
 
 
         //New method to get due and/or overdue books by Customer Name:
-        void OverdueItemsByCustomerName(string customerName);
+        string OverdueItemsByCustomerName(string customerName);
 
         void NextDay();
 

@@ -48,7 +48,14 @@ namespace LibraryCatalogueProject
 			CheckoutBook(customer, booksLibrary, itemKey);
 			Console.WriteLine("*****************");
 
-			itemKey = "70000010"; // NewReleaseBook --> "The Guardians"
+            CheckoutBook(customer, booksLibrary, itemKey);
+            Console.WriteLine("*****************");
+
+            itemKey = "500000033"; // Magazine --> "Girl's World"
+            CheckoutBook(customer, booksLibrary, itemKey);
+            Console.WriteLine("*****************");
+
+            itemKey = "70000010"; // NewReleaseBook --> "The Guardians"
             CheckoutBook(customer, booksLibrary, itemKey);
 			Console.WriteLine("*****************");
 
@@ -62,7 +69,12 @@ namespace LibraryCatalogueProject
 
 			// Get book customer has:
 			Console.WriteLine("Customer Items: ");
-			booksLibrary.CustomerItems(customer.FullName);
+
+            foreach (var item in booksLibrary.CustomerItems(customer.FullName))
+            {
+                Console.WriteLine(item);
+            }
+            //Console.WriteLine(booksLibrary.CustomerItems(customer.FullName));
 			Console.WriteLine("*****************");
 
             // Add Days:
@@ -70,15 +82,15 @@ namespace LibraryCatalogueProject
 
             // Get overdue books:
             Console.WriteLine("Overdue items: ");
-			booksLibrary.OverdueItemsByCustomerName(customer.FullName);
+            Console.WriteLine(booksLibrary.OverdueItemsByCustomerName(customer.FullName));
 			Console.WriteLine("*****************");
 
-			// Returning books:
-			booksLibrary.ReturnAnItem("50000000"); // <-- item that doesn't exist.
-            booksLibrary.ReturnAnItem("50000003");
-            booksLibrary.ReturnAnItem("70000010");
-			booksLibrary.ReturnAnItem("48039486");
-            booksLibrary.ReturnAnItem("211504DV");
+            // Returning books:
+            Console.WriteLine(booksLibrary.ReturnAnItem("50000000")); // <-- item that doesn't exist.
+            Console.WriteLine(booksLibrary.ReturnAnItem("50000003"));
+            Console.WriteLine(booksLibrary.ReturnAnItem("70000010"));
+            Console.WriteLine(booksLibrary.ReturnAnItem("48039486"));
+            Console.WriteLine(booksLibrary.ReturnAnItem("211504DV"));
 
             Console.ReadLine();
 		}
@@ -87,18 +99,23 @@ namespace LibraryCatalogueProject
 		{
 			try
 			{
-				if (libraryCatalogue.CheckItemAvailability(itemName))
+				if (libraryCatalogue.CheckItemAvailability(itemName, out var message))
 				{
-					var book = libraryCatalogue.CheckOutAnItem(itemName, customer.FullName);
-				}
-
+                    var book = libraryCatalogue.CheckOutAnItem(itemName, customer.FullName);
+                    Console.WriteLine($"You just checked out '{book.Title}'. " +
+                    $"\nNote: Please return it in {book.LengthOfCheckoutPeriod.TotalDays} days.\n");
+                }
+                else
+                    Console.WriteLine(message);
 			}
 			catch (LibraryItemAlreadyCheckedOutException ex)
 			{
-				Console.WriteLine($"Sorry, '{itemName}' book had been taken! " +
-			   $"It should be back in {((ex.LibraryItem.DayCheckedOut + ex.LibraryItem.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n");
 
-				throw;
+                Console.WriteLine(ex.Message);
+                //Console.WriteLine($"Sorry, '{itemName}' book had been taken! " +
+			   //$"It should be back in {((ex.LibraryItem.DayCheckedOut + ex.LibraryItem.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n");
+
+				//throw;
 			}
 
 			//if (libraryCatalogue.CheckBookAvailability(bookName))

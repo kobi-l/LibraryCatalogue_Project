@@ -8,10 +8,10 @@ namespace LibraryCatalog.Code.CustomExceptions
         public LibraryItemAlreadyCheckedOutException(ILibraryItem libraryItem)
         {
             LibraryItem = libraryItem;
-
         }
         public ILibraryItem LibraryItem { get; set; }
 
-        public override string Message => base.Message;
+        public override string Message => $"Sorry, '{LibraryItem.Title}' " +
+            $"had been taken out! It should be back in {((LibraryItem.DayCheckedOut + LibraryItem.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n";
     }
 }
