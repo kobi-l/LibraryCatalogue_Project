@@ -35,7 +35,6 @@ namespace LibraryCatalogueProject
 		{
 			// 1. Create a new library and load library catalogue
 			string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"../../../LibraryCatalogue.xml");
-
 			var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(path));
 			//var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"LibraryCatalogue.xml"));
 			//var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"C:\dev\Other Projects\Kobi\LibraryCatalogue_Project\LibraryCatalogue.xml"));
@@ -45,11 +44,11 @@ namespace LibraryCatalogueProject
 
 			// Checking out items:
 			var itemKey = "50000003"; // Magazine --> "Girl's World"
-			CheckoutBook(customer, booksLibrary, itemKey);
-			Console.WriteLine("*****************");
-
             CheckoutBook(customer, booksLibrary, itemKey);
             Console.WriteLine("*****************");
+
+            //CheckoutBook(customer, booksLibrary, itemKey);
+            //Console.WriteLine("*****************");
 
             itemKey = "500000033"; // Magazine --> "Girl's World"
             CheckoutBook(customer, booksLibrary, itemKey);
@@ -82,15 +81,35 @@ namespace LibraryCatalogueProject
 
             // Get overdue books:
             Console.WriteLine("Overdue items: ");
-            Console.WriteLine(booksLibrary.OverdueItemsByCustomerName(customer.FullName));
+            foreach (var item in booksLibrary.OverdueItemsByCustomerName(customer.FullName))
+            {
+                Console.WriteLine(item);
+            }
+
 			Console.WriteLine("*****************");
 
             // Returning books:
-            Console.WriteLine(booksLibrary.ReturnAnItem("50000000")); // <-- item that doesn't exist.
-            Console.WriteLine(booksLibrary.ReturnAnItem("50000003"));
-            Console.WriteLine(booksLibrary.ReturnAnItem("70000010"));
-            Console.WriteLine(booksLibrary.ReturnAnItem("48039486"));
-            Console.WriteLine(booksLibrary.ReturnAnItem("211504DV"));
+            Console.WriteLine("Returned items: ");
+            foreach (var item in booksLibrary.ReturnAnItem("50000000"))
+            {
+                Console.WriteLine(item);
+            }
+            foreach (var item in booksLibrary.ReturnAnItem("50000003"))
+            {
+                Console.WriteLine(item);
+            }
+            foreach (var item in booksLibrary.ReturnAnItem("70000010"))
+            {
+                Console.WriteLine(item);
+            }
+            foreach (var item in booksLibrary.ReturnAnItem("48039486"))
+            {
+                Console.WriteLine(item);
+            }
+            foreach (var item in booksLibrary.ReturnAnItem("211504DV"))
+            {
+                Console.WriteLine(item);
+            }
 
             Console.ReadLine();
 		}
@@ -101,9 +120,9 @@ namespace LibraryCatalogueProject
 			{
 				if (libraryCatalogue.CheckItemAvailability(itemName, out var message))
 				{
-                    var book = libraryCatalogue.CheckOutAnItem(itemName, customer.FullName);
-                    Console.WriteLine($"You just checked out '{book.Title}'. " +
-                    $"\nNote: Please return it in {book.LengthOfCheckoutPeriod.TotalDays} days.\n");
+                    var item = libraryCatalogue.CheckOutAnItem(itemName, customer.FullName);
+                    Console.WriteLine($"You just checked out '{item.Title}'. " +
+                    $"\nNote: Please return it in {item.LengthOfCheckoutPeriod.TotalDays} days.\n");
                 }
                 else
                     Console.WriteLine(message);

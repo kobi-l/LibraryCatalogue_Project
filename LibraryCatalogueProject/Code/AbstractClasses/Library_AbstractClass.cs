@@ -53,48 +53,54 @@ namespace LibraryCatalogueProject
             foreach (var item in customerItems)
             {
                 items.Add($"Item: '{item.Title}'\n" + $"Due in days: {DaysTillDue(item)}\n");
-
             }
 
             return items;
         }
 
-        public int DaysTillDue(ILibraryItem item) => (CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.Days * -1;
+        public int DaysTillDue(ILibraryItem item)
+        {
+            return (CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.Days * -1;
+        }
 
-        public void NextDay() => CurrentDay.AddDays(1);
+        //public void NextDay() => CurrentDay.AddDays(1);
 
-        public string OverdueItemsByCustomerName(string customerName)
+        public List<string> OverdueItemsByCustomerName(string customerName)
         {
             var customerItems = ItemsListByCustomer(customerName);
-
             var overdueItems = customerItems.Where(b => DaysTillDue(b) <= 0);
 
-            var items = string.Empty;
+            var items = new List<string>();
 
             foreach (var item in overdueItems)
             {
-                items += $"'{item.Title}'\nDays late: {(DaysTillDue(item)) * -1}\n";
+                items.Add($"'{item.Title}'\nDays late: {(DaysTillDue(item)) * -1}\n");
             }
 
             return items;
         }
 
-        public string ReturnAnItem(string itemTitle)
+
+        public List<string> ReturnAnItem(string itemTitle)
         {
             if (!LibraryCatalogue.TryGetValue(itemTitle, out ILibraryItem item)) // <--- was throwing exception
-                return "This item doesn't belong to out library.\n";
+                return new List<string> { ("This item doesn't belong to out library.\n") };
 
 
             var daysLate = CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod);
-            var message = string.Empty;
+
+            var message = new List<string>();
+
             if (daysLate > TimeSpan.Zero) // <-- '0' int is TimeSpan.Zero when working with dates
             {
-                message = $"You owe the library ${InitialLateFee + daysLate.Value.TotalDays * FeePerLateDay} because " +
-                    $"'{item.Title}' is {daysLate.Value.TotalDays} days overdue. ";
+                message.Add($"You owe the library ${InitialLateFee + daysLate.Value.TotalDays * FeePerLateDay} because " +
+                    $"'{item.Title}' is {daysLate.Value.TotalDays} days overdue. " + "Item returned. Thank you!\n");
             }
+            else
+                message.Add("Item returned.Thank you!\n");
 
             item.SetIsCheckedOut(false, null, null);
-            return message + "Item returned. Thank you!\n";
+            return message;
         }
 
         public void SetDay(DateTime day) => CurrentDay = day;

@@ -72,5 +72,64 @@ namespace LibraryCatalog.Tests
             // Assert
             Assert.AreEqual(DateTime.Today.Day, actual.DayCheckedOut.Value.Day);
         }
+
+        [TestMethod]
+        public void _ReturningAnItem_IsCheckedOut_GetsSetToFALSE_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481"; // <-- DVD, 3 days
+
+            library.CheckOutAnItem(title, customer);
+
+            var expectedIsCheckedOut = false;
+
+            // Act
+            library.ReturnAnItem(title);
+            var actual = checkoutBook[title].IsCheckedOut;
+
+            // Assert
+            Assert.AreEqual(expectedIsCheckedOut, actual);
+        }
+
+        [TestMethod]
+        public void _ReturningAnItem_DayCheckedOut_GetsSetToNULL_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481"; // <-- DVD, 3 days
+
+            library.CheckOutAnItem(title, customer);
+
+            // Act
+            library.ReturnAnItem(title);
+            var actual = checkoutBook[title].DayCheckedOut;
+
+            // Assert
+            Assert.AreEqual(null, actual);
+        }
+
+        [TestMethod]
+        public void _ReturningAnItem_CustomerCheckedOutTo_GetsSetToNULL_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481"; // <-- DVD, 3 days
+
+            library.CheckOutAnItem(title, customer);
+
+            // Act
+            library.ReturnAnItem(title);
+            var actual = checkoutBook[title].WhoWasItCheckeoutTo;
+
+            // Assert
+            Assert.AreEqual(null, actual);
+        }
     }
 }

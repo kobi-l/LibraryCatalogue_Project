@@ -199,6 +199,34 @@ namespace LibraryCatalog.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void CustomerItemsMethod_ItemsRemovedFromTheList_WhenReturningItems_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+
+            var customer = "Tom";
+            var title = "48039481";
+
+
+            // Act
+            // Checkout an item
+            library.CheckOutAnItem(title, customer);
+            var actualBeforeReturningItem = library.CustomerItems(customer);
+            var expectedBeforeReturningItem = 1;
+
+
+            // Return an item
+            library.ReturnAnItem(title);
+            var actualAfterReturnigItem = library.CustomerItems(customer);
+            var expectedAfterReturningItem = 0;
+
+            // Assert
+            Assert.AreEqual(expectedBeforeReturningItem, actualBeforeReturningItem.Count);
+            Assert.AreEqual(expectedAfterReturningItem, actualAfterReturnigItem.Count);
+        }
+
 
         // DaysTillDue Tests:
         [TestMethod]
@@ -220,6 +248,128 @@ namespace LibraryCatalog.Tests
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        // OverdueItemsByCustomerName Method Tests:
+        [TestMethod]
+        public void OverdueItemsByCustomerNameMethod_ListCanBeEmpty__Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+
+            // Act
+            var actual = library.OverdueItemsByCustomerName(customer);
+
+            // Assert
+            Assert.AreEqual(0, actual.Length());
+        }
+
+        [TestMethod]
+        public void OverdueItemsByCustomerNameMethod_ListPopulatesWhenItemsOverdue__Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481";
+
+            library.CheckOutAnItem(title, customer);
+            library.SetDay(DateTime.Today.AddDays(6));
+            var expected = 1;
+
+            // Act
+            var actual = library.OverdueItemsByCustomerName(customer);
+
+            // Assert
+            Assert.AreEqual(expected, actual.Count);
+        }
+
+        [TestMethod]
+        public void OverdueItemsByCustomerNameMethod_ExpectedMessageReturned_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481";
+
+            library.CheckOutAnItem(title, customer);
+            library.SetDay(DateTime.Today.AddDays(6));
+
+            var expected = $"'{checkoutBook[title].Title}'\nDays late: 3\n";
+
+            // Act
+            var actual = library.OverdueItemsByCustomerName(customer).FirstOrDefault();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        // ReturnAnItem Method Tests:
+        [TestMethod]
+        public void ReturnAnItemMethod_ReturningAnItemThatDoesntBelongToLibrary_ExpectedMessageReturned_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481";
+
+            library.CheckOutAnItem(title, customer);
+            //library.SetDay(DateTime.Today.AddDays(6));
+
+            var expectedMessage = "This item doesn't belong to out library.\n";
+
+            // Act
+            var actual = library.ReturnAnItem("INVALID").FirstOrDefault();
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.ToString());
+        }
+
+        [TestMethod]
+        public void ReturnAnItemMethod_ReturningAnItemOnTime_ExpectedMessageReturned_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481";
+
+            library.CheckOutAnItem(title, customer);
+
+            var expectedMessage = "Item returned.Thank you!\n";
+
+            // Act
+            var actual = library.ReturnAnItem(title);
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual.FirstOrDefault());
+        }
+
+        [TestMethod]
+        public void ReturnAnItemMethod_ReturningAnItemThatOverdue_ExpectedMessageReturned_Test()
+        {
+            // Arrange
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481"; // <-- DVD, 3 days
+
+            library.CheckOutAnItem(title, customer);
+            library.SetDay(DateTime.Today.AddDays(6));
+
+
+            var expectedMessage = $"You owe the library $3.5 because " +
+                    $"'{checkoutBook[title].Title}' is 3 days overdue. " + "Item returned. Thank you!\n";
+
+            // Act
+            var actual = library.ReturnAnItem(title).FirstOrDefault();
+
+            // Assert
+            Assert.AreEqual(expectedMessage, actual);
         }
     }
 }

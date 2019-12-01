@@ -21,7 +21,7 @@ namespace LibraryCatalogueProject
         ILibraryItem CheckOutAnItem(string title, string customer);
 
         // Method to return a book
-        string ReturnAnItem(string title);
+        List<string> ReturnAnItem(string title);
 
         // Method book alrady checked out
         //void ItemAlreadyCheckedOut(ILibraryItem book);
@@ -30,8 +30,8 @@ namespace LibraryCatalogueProject
         List<ILibraryItem> ItemsListByCustomer(string customerName);
 
 
-        // Method to get Days till books are due:
-        int DaysTillDue(ILibraryItem book);
+        // Method to get Days till items are due:
+        int DaysTillDue(ILibraryItem item);
 
 
         // Checked out books by Customer Name, and when books are due:
@@ -39,9 +39,9 @@ namespace LibraryCatalogueProject
 
 
         //New method to get due and/or overdue books by Customer Name:
-        string OverdueItemsByCustomerName(string customerName);
+        List<string> OverdueItemsByCustomerName(string customerName);
 
-        void NextDay();
+        //void NextDay();
 
         void SetDay(DateTime day);
     }

@@ -115,6 +115,7 @@
     <Compile Include="Code\ProgramClasses\PopulateCatalogue.cs" />
     <Compile Include="Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\LibraryItems_CheckoutPeriod_Tests.cs" />
     <Compile Include="Tests\Library_Tests.cs" />
     <Compile Include="Tests\LibraryItem_Tests.cs" />
     <Compile Include="Tests\XMLfileTests.cs" />
