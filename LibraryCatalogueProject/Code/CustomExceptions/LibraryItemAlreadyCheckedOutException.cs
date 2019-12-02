@@ -11,7 +11,7 @@ namespace LibraryCatalog.Code.CustomExceptions
         }
         public ILibraryItem LibraryItem { get; set; }
 
-        public override string Message => $"Sorry, '{LibraryItem.Title}' " +
+        public override string Message => $"'{LibraryItem.Title}' " +
             $"had been taken out! It should be back in {((LibraryItem.DayCheckedOut + LibraryItem.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n";
     }
 }

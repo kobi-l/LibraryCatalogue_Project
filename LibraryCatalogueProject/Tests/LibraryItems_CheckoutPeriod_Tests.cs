@@ -106,5 +106,43 @@ namespace LibraryCatalog.Tests
             // Assert
             Assert.AreEqual(expectedPeriod, actualPeriod);
         }
+
+        [TestMethod]
+        public void LengthOfCheckoutPeriod_CalculatesCorrectly_AfterAddingDays_Expected2Days_Test()
+        {
+            // Arrange
+            var checkoutBook = new Library(TestLibrary());
+            var magazine = "48039481"; // MovieDVD("Christmas Movie")
+            var customer = "Tom";
+
+            // Act
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
+            checkoutBook.SetDay(DateTime.Today.AddDays(1));
+            
+            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem);
+            var expectedPeriod = 2;
+
+            // Assert
+            Assert.AreEqual(expectedPeriod, actualPeriod);
+        }
+
+        [TestMethod]
+        public void LengthOfCheckoutPeriod_DisplayedNegative_WhenExceedingAllowedPeriod_ExpectedNegative2Days_Test()
+        {
+            // Arrange
+            var checkoutBook = new Library(TestLibrary());
+            var magazine = "48039481"; // MovieDVD("Christmas Movie")
+            var customer = "Tom";
+
+            // Act
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
+            checkoutBook.SetDay(DateTime.Today.AddDays(5));
+
+            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem);
+            var expectedPeriod = -2;
+
+            // Assert
+            Assert.AreEqual(expectedPeriod, actualPeriod);
+        }
     }
 }

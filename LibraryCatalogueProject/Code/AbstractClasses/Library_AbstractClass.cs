@@ -24,10 +24,12 @@ namespace LibraryCatalogueProject
             message = string.Empty;
 
             if (!LibraryCatalogue.TryGetValue(itemTitle, out ILibraryItem item))
-            {
-                message = $"Sorry, we don't have '{itemTitle}' book.\n";
-                return false;
-            }
+            //{
+            //    message = $"Sorry, we don't have '{itemTitle}' book.\n";
+            //    return false;
+            //}
+
+            throw new LibraryItemDoesntExistException(item);
 
             if (item.IsCheckedOut)
                 throw new LibraryItemAlreadyCheckedOutException(item);
@@ -58,10 +60,7 @@ namespace LibraryCatalogueProject
             return items;
         }
 
-        public int DaysTillDue(ILibraryItem item)
-        {
-            return (CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.Days * -1;
-        }
+        public int DaysTillDue(ILibraryItem item) => (CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.Days * -1;
 
         //public void NextDay() => CurrentDay.AddDays(1);
 
@@ -84,24 +83,28 @@ namespace LibraryCatalogueProject
         public List<string> ReturnAnItem(string itemTitle)
         {
             if (!LibraryCatalogue.TryGetValue(itemTitle, out ILibraryItem item)) // <--- was throwing exception
-                return new List<string> { ("This item doesn't belong to out library.\n") };
+                //return new List<string> { ("This item doesn't belong to out library.\n") };
+                throw new LibraryItemDoesntExistException(item);
 
-
-            var daysLate = CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod);
-
+            var feeIfAny = CalculateLateFee(item);
             var message = new List<string>();
 
-            if (daysLate > TimeSpan.Zero) // <-- '0' int is TimeSpan.Zero when working with dates
+            if (feeIfAny > 0) // <-- '0' int is TimeSpan.Zero when working with dates
             {
-                message.Add($"You owe the library ${InitialLateFee + daysLate.Value.TotalDays * FeePerLateDay} because " +
-                    $"'{item.Title}' is {daysLate.Value.TotalDays} days overdue. " + "Item returned. Thank you!\n");
+                message.Add($"You owe the library ${feeIfAny} because " +
+                    $"'{item.Title}' is {GetDaysLate(item)} days overdue. " + "Item returned. Thank you!\n");
             }
             else
                 message.Add("Item returned.Thank you!\n");
 
             item.SetIsCheckedOut(false, null, null);
+
             return message;
         }
+
+        public double CalculateLateFee(ILibraryItem item) => InitialLateFee + GetDaysLate(item) * FeePerLateDay;
+
+        private double GetDaysLate(ILibraryItem item) => (CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.TotalDays;
 
         public void SetDay(DateTime day) => CurrentDay = day;
     }

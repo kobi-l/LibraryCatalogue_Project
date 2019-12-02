@@ -60,18 +60,17 @@ namespace LibraryCatalog.Tests
         // CheckItemAvailability Method Tests:
 
         [TestMethod]
-        public void CheckItemAvailability_InvalidItem_MessageExpected_SorryWeDontHaveIt_Test()
+        public void CheckItemAvailability_InvalidItem_Expected_LibraryItemDoesntExistExceptionThrown_Test()
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
             var title = "48039480454";
 
             // Act
-            checkoutBook.CheckItemAvailability(title, out string message);
-            var expectedMessage = $"Sorry, we don't have '{title}' book.\n";
+            Action act = () => checkoutBook.CheckItemAvailability(title, out string message);
 
             // Assert
-            Assert.AreEqual(expectedMessage, message);
+            Assert.ThrowsException<LibraryItemDoesntExistException>(act);
         }
 
         [TestMethod]
@@ -99,15 +98,15 @@ namespace LibraryCatalog.Tests
 
             // Act
             checkoutBook.CheckOutAnItem(title, customer);
-            var expectedMessage = $"Sorry, 'Christmas Movie' had been taken out! It should be back in 3 days.\n";
+            //var expectedMessage = $"Sorry, 'Christmas Movie' had been taken out! It should be back in 3 days.\n";
 
             // Act
             Action act = () => checkoutBook.CheckItemAvailability(title, out string message);
 
             // Assert
-            var exception = Assert.ThrowsException<LibraryItemAlreadyCheckedOutException>(act); 
-
-            Assert.AreEqual(expectedMessage, exception.Message);
+            //var exception = Assert.ThrowsException<LibraryItemAlreadyCheckedOutException>(act);
+            Assert.ThrowsException<LibraryItemAlreadyCheckedOutException>(act);
+            //Assert.AreEqual(expectedMessage, exception.Message);
         }
 
 
@@ -128,7 +127,7 @@ namespace LibraryCatalog.Tests
         }
 
         [TestMethod]
-        public void CustomerItemsMethod_ListPopulatesWithItems_Expected_ListIsntEmpty_Test()
+        public void CustomerItemsMethod_SingleCustomer_ListPopulatesWithItems_Expected_ListIsntEmpty_Test()
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
@@ -153,7 +152,7 @@ namespace LibraryCatalog.Tests
         }
 
         [TestMethod]
-        public void CustomerItemsMethod_ListPupulatesWithItems_Expected_ListIsntEmpty_Test()
+        public void CustomerItemsMethod_TwoCustomers_ListPopulatesWithItems_Expected_ListIsntEmpty_Test()
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
@@ -314,19 +313,12 @@ namespace LibraryCatalog.Tests
             // Arrange
             var checkoutBook = TestLibrary();
             var library = new Library(checkoutBook);
-            var customer = "Tom";
-            var title = "48039481";
-
-            library.CheckOutAnItem(title, customer);
-            //library.SetDay(DateTime.Today.AddDays(6));
-
-            var expectedMessage = "This item doesn't belong to out library.\n";
 
             // Act
-            var actual = library.ReturnAnItem("INVALID").FirstOrDefault();
+            Action act = () => library.ReturnAnItem("INVALID").FirstOrDefault();
 
             // Assert
-            Assert.AreEqual(expectedMessage, actual.ToString());
+            Assert.ThrowsException<LibraryItemDoesntExistException>(act);
         }
 
         [TestMethod]
@@ -359,6 +351,7 @@ namespace LibraryCatalog.Tests
             var title = "48039481"; // <-- DVD, 3 days
 
             library.CheckOutAnItem(title, customer);
+
             library.SetDay(DateTime.Today.AddDays(6));
 
 
@@ -370,6 +363,16 @@ namespace LibraryCatalog.Tests
 
             // Assert
             Assert.AreEqual(expectedMessage, actual);
+        }
+
+        private void ArrangeTests()
+        {
+            var checkoutBook = TestLibrary();
+            var library = new Library(checkoutBook);
+            var customer = "Tom";
+            var title = "48039481"; // <-- DVD, 3 days
+
+            library.CheckOutAnItem(title, customer);
         }
     }
 }

@@ -39,77 +39,90 @@ namespace LibraryCatalogueProject
 			//var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"LibraryCatalogue.xml"));
 			//var booksLibrary = new Library(new PopulateCatalogue().GetItemsFromXmlDocument(@"C:\dev\Other Projects\Kobi\LibraryCatalogue_Project\LibraryCatalogue.xml"));
 
+
+
 			// 2. Create a new customer
 			var customer = new Customer("John", "Smith");
 
-			// Checking out items:
-			var itemKey = "50000003"; // Magazine --> "Girl's World"
-            CheckoutBook(customer, booksLibrary, itemKey);
-            Console.WriteLine("*****************");
-
-            //CheckoutBook(customer, booksLibrary, itemKey);
-            //Console.WriteLine("*****************");
-
-            itemKey = "500000033"; // Magazine --> "Girl's World"
-            CheckoutBook(customer, booksLibrary, itemKey);
-            Console.WriteLine("*****************");
-
-            itemKey = "70000010"; // NewReleaseBook --> "The Guardians"
-            CheckoutBook(customer, booksLibrary, itemKey);
+			// 3. Checking out items:
+			var itemKey1 = "50000003"; // Magazine --> "Girl's World"
+			CheckoutBook(customer, booksLibrary, itemKey1);
 			Console.WriteLine("*****************");
 
-			itemKey = "48039486"; // Book --> "Harry Potter and the Deathly Hallows"
-			CheckoutBook(customer, booksLibrary, itemKey);
-			Console.WriteLine("*****************");
-
-            itemKey = "211504DV"; // DVD --> "Men In Black"
-            CheckoutBook(customer, booksLibrary, itemKey);
+            // 3.1 Adding '50000003' second time: <-- Expected message  - 'Girl's World' had been taken out! It should be back in 7 days.
+            CheckoutBook(customer, booksLibrary, itemKey1);
             Console.WriteLine("*****************");
 
-			// Get book customer has:
+            // 3.2 Adding item that doesn't exists: <-- Expected EXCEPTION message - 'This item does not exist.'
+            var itemKey2 = "500000033"; 
+			CheckoutBook(customer, booksLibrary, itemKey2);
+			Console.WriteLine("*****************");
+
+            // 3.3 Adding a NewReleaseBook --> "The Guardians"
+            var itemKey3 = "70000010"; 
+			CheckoutBook(customer, booksLibrary, itemKey3);
+			Console.WriteLine("*****************");
+
+            // 3.4 Adding a Book --> "Harry Potter and the Deathly Hallows"
+            var itemKey4 = "48039486"; 
+			CheckoutBook(customer, booksLibrary, itemKey4);
+			Console.WriteLine("*****************");
+
+            // 3.5 Adding a DVD --> "Men In Black"
+            var itemKey5 = "211504DV";  
+			CheckoutBook(customer, booksLibrary, itemKey5);
+			Console.WriteLine("*****************");
+
+			// 4. Get book customer has:
 			Console.WriteLine("Customer Items: ");
-
-            foreach (var item in booksLibrary.CustomerItems(customer.FullName))
-            {
-                Console.WriteLine(item);
-            }
-            //Console.WriteLine(booksLibrary.CustomerItems(customer.FullName));
+			foreach (var item in booksLibrary.CustomerItems(customer.FullName))
+			{
+				Console.WriteLine(item);
+			}
 			Console.WriteLine("*****************");
 
-            // Add Days:
-            booksLibrary.SetDay(DateTime.Today.AddDays(6));
+			// 5. Add Days:
+			booksLibrary.SetDay(DateTime.Today.AddDays(6));
 
-            // Get overdue books:
-            Console.WriteLine("Overdue items: ");
-            foreach (var item in booksLibrary.OverdueItemsByCustomerName(customer.FullName))
-            {
-                Console.WriteLine(item);
-            }
-
+			// 6. Get overdue books:
+			Console.WriteLine("Overdue items: ");
+			foreach (var item in booksLibrary.OverdueItemsByCustomerName(customer.FullName))
+			{
+				Console.WriteLine(item);
+			}
 			Console.WriteLine("*****************");
 
-            // Returning books:
-            Console.WriteLine("Returned items: ");
-            foreach (var item in booksLibrary.ReturnAnItem("50000000"))
-            {
-                Console.WriteLine(item);
-            }
-            foreach (var item in booksLibrary.ReturnAnItem("50000003"))
-            {
-                Console.WriteLine(item);
-            }
-            foreach (var item in booksLibrary.ReturnAnItem("70000010"))
-            {
-                Console.WriteLine(item);
-            }
-            foreach (var item in booksLibrary.ReturnAnItem("48039486"))
-            {
-                Console.WriteLine(item);
-            }
-            foreach (var item in booksLibrary.ReturnAnItem("211504DV"))
-            {
-                Console.WriteLine(item);
-            }
+
+			// 7. Returning books:
+			Console.WriteLine("Returned items: ");
+            ReturnMaterials(booksLibrary, itemKey1); // <-- Expected message - 'Item returned.Thank you!'
+            ReturnMaterials(booksLibrary, itemKey2); // <--  Expected EXCEPTION message - 'This item does not exist.'
+            ReturnMaterials(booksLibrary, itemKey3); // <-- Expected message - 'You owe the library $1.5 because 'The Guardians' is 1 days overdue. Item returned. Thank you!'
+            ReturnMaterials(booksLibrary, itemKey4); // <-- Expected message - 'Item returned.Thank you!'
+            ReturnMaterials(booksLibrary, itemKey5); // <-- Expected message - 'You owe the library $3.5 because 'Men In Black' is 3 days overdue. Item returned. Thank you!'
+
+
+            // THIS IS HOW I WAS RETURNING MATERIALS BEFORE I HAVE EXTRACTED TO the ReturnMaterials().
+            //foreach (var item in booksLibrary.ReturnAnItem("50000000"))
+            //{
+            //	Console.WriteLine(item);
+            //}
+            //foreach (var item in booksLibrary.ReturnAnItem("50000003"))
+            //{
+            //	Console.WriteLine(item);
+            //}
+            //foreach (var item in booksLibrary.ReturnAnItem("70000010"))
+            //{
+            //	Console.WriteLine(item);
+            //}
+            //foreach (var item in booksLibrary.ReturnAnItem("48039486"))
+            //{
+            //	Console.WriteLine(item);
+            //}
+            //foreach (var item in booksLibrary.ReturnAnItem("211504DV"))
+            //{
+            //	Console.WriteLine(item);
+            //}
 
             Console.ReadLine();
 		}
@@ -120,27 +133,37 @@ namespace LibraryCatalogueProject
 			{
 				if (libraryCatalogue.CheckItemAvailability(itemName, out var message))
 				{
-                    var item = libraryCatalogue.CheckOutAnItem(itemName, customer.FullName);
-                    Console.WriteLine($"You just checked out '{item.Title}'. " +
-                    $"\nNote: Please return it in {item.LengthOfCheckoutPeriod.TotalDays} days.\n");
-                }
-                else
-                    Console.WriteLine(message);
+					var item = libraryCatalogue.CheckOutAnItem(itemName, customer.FullName);
+					Console.WriteLine($"You just checked out '{item.Title}'. " +
+					$"\nNote: Please return it in {item.LengthOfCheckoutPeriod.TotalDays} days.\n");
+				}
+				else
+					Console.WriteLine(message);
 			}
 			catch (LibraryItemAlreadyCheckedOutException ex)
 			{
+				Console.WriteLine(ex.Message);
+			}
+            catch (LibraryItemDoesntExistException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+		}
+
+        public static void ReturnMaterials(Library libraryCatalogue, string itemKey)
+        {
+            try
+            {
+                foreach (var item in libraryCatalogue.ReturnAnItem(itemKey))
+                {
+                    Console.WriteLine(item);
+                }
+            }
+            catch (LibraryItemDoesntExistException ex)
+            {
 
                 Console.WriteLine(ex.Message);
-                //Console.WriteLine($"Sorry, '{itemName}' book had been taken! " +
-			   //$"It should be back in {((ex.LibraryItem.DayCheckedOut + ex.LibraryItem.LengthOfCheckoutPeriod - DateTime.Today)).Value.Days} days.\n");
-
-				//throw;
-			}
-
-			//if (libraryCatalogue.CheckBookAvailability(bookName))
-			//{
-			//    var book = libraryCatalogue.CheckOutBook(bookName, customer.FullName);
-			//}
-		}
+            }
+        }
 	}
 }
