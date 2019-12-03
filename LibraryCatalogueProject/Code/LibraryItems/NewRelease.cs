@@ -13,9 +13,12 @@ namespace LibraryCatalogueProject
 {
     public class NewRelease : LibraryItem_AbstractClass
     {
-        public NewRelease(string itemTitle)
+        const string Type = "NewReleaseBook";
+        public NewRelease(string isbn, string itemTitle)
         {
+            ISBN = isbn;
             Title = itemTitle;
+            ItemType = Type;
             IsCheckedOut = false;
         }
 

@@ -104,8 +104,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Adapter\CustomerItemsAdapter.cs" />
     <Compile Include="Code\CustomExceptions\LibraryItemAlreadyCheckedOutException.cs" />
     <Compile Include="Code\CustomExceptions\LibraryItemDoesntExistException.cs" />
+    <Compile Include="Code\Interfaces\ICustomerItems.cs" />
     <Compile Include="Code\LibraryItems\Book.cs" />
     <Compile Include="Code\Interfaces\ILibraryItem.cs" />
     <Compile Include="Code\AbstractClasses\Library_AbstractClass.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Code\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\LibraryItems_CheckoutPeriod_Tests.cs" />
+    <Compile Include="Tests\LibraryItems_OverdueItems_Tests.cs" />
     <Compile Include="Tests\Library_Tests.cs" />
     <Compile Include="Tests\LibraryItem_Tests.cs" />
     <Compile Include="Tests\XMLfileTests.cs" />

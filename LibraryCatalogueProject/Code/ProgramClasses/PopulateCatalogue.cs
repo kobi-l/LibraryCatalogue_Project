@@ -17,40 +17,36 @@ namespace LibraryCatalogueProject
 
             foreach (XmlNode item in node)
             {
-                var isbnKey = item.ChildNodes[0].InnerText.ToUpper();
+                var isbn = item.ChildNodes[0].InnerText.ToUpper();
                 var itemTitle = item.ChildNodes[2].InnerText;
-                var typeName = item.ChildNodes[1].InnerText;
+                var itemType = item.ChildNodes[1].InnerText;
 
-                //string.Equals(a, b, StringComparison.CurrentCultureIgnoreCase);
-                // JUSTIN : You need to be storing the ISBN on the LibraryItem so you can 
-                // get the key you need to check in and check out books. 
                 try
                 {
-                    if (string.Equals(typeName, "Book", StringComparison.CurrentCultureIgnoreCase))
+                    if (string.Equals(itemType, "Book", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        var book = CreateBook(itemTitle);
-                        newDictionary.Add(isbnKey, book);
+                        var book = CreateBook(isbn, itemTitle);
+                        newDictionary.Add(isbn, book);
                     }
-                    if (string.Equals(typeName, "Magazine", StringComparison.CurrentCultureIgnoreCase))
+                    if (string.Equals(itemType, "Magazine", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        var magazine = CreateMagazine(itemTitle);
-                        newDictionary.Add(isbnKey, magazine);
+                        var magazine = CreateMagazine(isbn, itemTitle);
+                        newDictionary.Add(isbn, magazine);
                     }
-                    if (string.Equals(typeName, "NewReleaseBook", StringComparison.CurrentCultureIgnoreCase))
+                    if (string.Equals(itemType, "NewReleaseBook", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        var newRelease = CreateNewRelease(itemTitle);
-                        newDictionary.Add(isbnKey, newRelease);
+                        var newRelease = CreateNewRelease(isbn, itemTitle);
+                        newDictionary.Add(isbn, newRelease);
                     }
-                    if (string.Equals(typeName, "DVD", StringComparison.CurrentCultureIgnoreCase))
+                    if (string.Equals(itemType, "DVD", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        var newDvd = CreateDVD(itemTitle);
-                        newDictionary.Add(isbnKey, newDvd);
+                        var newDvd = CreateDVD(isbn, itemTitle);
+                        newDictionary.Add(isbn, newDvd);
                     }
                 }
                 catch (Exception ex)
                 {
                     throw ex;
-                    //ex.Message.ToString();
                 }  
             }
             return newDictionary;
@@ -71,27 +67,27 @@ namespace LibraryCatalogueProject
             return ProcessXML(doc);
         }
 
-        private ILibraryItem CreateDVD(string itemTitle)
+        private ILibraryItem CreateDVD(string isbn, string itemTitle)
         {
-            var dvdMovie = new MovieDVD(itemTitle);
+            var dvdMovie = new MovieDVD(isbn, itemTitle);
             return dvdMovie;
         }
 
-        private ILibraryItem CreateBook(string itemTitle)
+        private ILibraryItem CreateBook(string isbn, string itemTitle)
         {
-            var book = new Book(itemTitle);
+            var book = new Book(isbn, itemTitle);
             return book;
         }
 
-        private ILibraryItem CreateMagazine(string itemTitle)
+        private ILibraryItem CreateMagazine(string isbn, string itemTitle)
         {
-            var magazine = new Magazine(itemTitle);
+            var magazine = new Magazine(isbn, itemTitle);
             return magazine;
         }
 
-        private ILibraryItem CreateNewRelease(string itemTitle)
+        private ILibraryItem CreateNewRelease(string isbn, string itemTitle)
         {
-            var newRelease = new NewRelease(itemTitle);
+            var newRelease = new NewRelease(isbn, itemTitle);
             return newRelease;
         }
     }

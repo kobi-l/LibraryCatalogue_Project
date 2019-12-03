@@ -5,15 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// JUSTIN : I would set, from inside these classes, the LibraryItem's ItemType.  
-// JUSTIN : All library items should also be setting the ISBN so you can easily pull out the key you need. 
 namespace LibraryCatalog.Code.LibraryItems
 {
     public class MovieDVD : LibraryItem_AbstractClass
     {
-        public MovieDVD(string itemTitle)
+        const string Type = "DVD";
+        public MovieDVD(string isbn, string itemTitle)
         {
+            ISBN = isbn;
             Title = itemTitle;
+            ItemType = Type;
             IsCheckedOut = false;
         }
 
