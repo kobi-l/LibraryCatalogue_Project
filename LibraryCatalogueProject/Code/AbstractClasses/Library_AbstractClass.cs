@@ -98,6 +98,13 @@ namespace LibraryCatalogueProject
 
         //public void NextDay() => CurrentDay.AddDays(1);
 
+
+
+        // JUSTIN : If you are wanting to use the overdue list to check in books, you should be
+        // passing back to the client the LibraryItems, not just a string.  You can do this in a couple of 
+        // ways.  Pass back a dictionary that you create and populate inside this method, or you can create a 
+        // new class that has a LibraryItem and a message, and you can pass back a list of that class. 
+
         public List<string> OverdueItemsByCustomerName(string customerName)
         {
             var customerItems = ItemsListByCustomer(customerName);
@@ -114,6 +121,8 @@ namespace LibraryCatalogueProject
         }
 
 
+        // JUSTIN : You actually aren't using the item's title, you are really using the ISBN.  
+        // The name of the parameter isn't correct and would be misleading. 
         public List<string> ReturnAnItem(string itemTitle)
         {
             // JUSTIN : Here is a third time that you are trying to get a value out of collection and if it fails
@@ -153,6 +162,7 @@ namespace LibraryCatalogueProject
         // JUSTIN : Again, lets remove this idea of CurrentDay and have the method accept a date instead. 
         private double GetDaysLate(ILibraryItem item) => (CurrentDay - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.TotalDays;
 
+        // JUSTIN : If we remove CurrentDay then we don't need this method. 
         public void SetDay(DateTime day) => CurrentDay = day;
     }
 }

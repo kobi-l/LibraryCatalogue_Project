@@ -22,6 +22,8 @@ namespace LibraryCatalogueProject
                 var typeName = item.ChildNodes[1].InnerText;
 
                 //string.Equals(a, b, StringComparison.CurrentCultureIgnoreCase);
+                // JUSTIN : You need to be storing the ISBN on the LibraryItem so you can 
+                // get the key you need to check in and check out books. 
                 try
                 {
                     if (string.Equals(typeName, "Book", StringComparison.CurrentCultureIgnoreCase))
