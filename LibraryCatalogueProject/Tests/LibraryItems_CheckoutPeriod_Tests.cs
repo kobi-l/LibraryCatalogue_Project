@@ -18,10 +18,10 @@ namespace LibraryCatalog.Tests
         {
             return new Dictionary<string, ILibraryItem>()
             {
-                { "48039480", new Book("Harry Potter and the Sorcerer's Stone")},
-                { "48039481", new MovieDVD("Christmas Movie")},
-                { "50000004", new Magazine("Encyclopedia of Life")},
-                { "50000006", new NewRelease("Animal Tales")},
+                { "48039480", new Book("48039480", "Harry Potter and the Sorcerer's Stone")},
+                { "48039481", new MovieDVD("48039481", "Christmas Movie")},
+                { "50000004", new Magazine("50000004", "Encyclopedia of Life")},
+                { "50000006", new NewRelease("50000006", "Animal Tales")},
             };
         }
 
@@ -32,14 +32,16 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
+            var date = DateTime.Today;
+
             var magazine = "50000004"; // Magazine --> "Girl's World"
             var customer = "Tom";
 
             // Act
             var expectedDays = 7;
 
-            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
-            var actualDays = checkoutBook.DaysTillDue(checkedOutItem);
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
+            var actualDays = checkoutBook.DaysTillDue(checkedOutItem, date);
 
             // Assert
             Assert.AreEqual(expectedDays, actualDays);
@@ -57,14 +59,16 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
+            var date = DateTime.Today;
+
             var magazine = "48039480"; // Book "Harry Potter and the Sorcerer's Stone"
             var customer = "Tom";
 
             // Act
             var expectedPeriod = 14;
 
-            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
-            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem);
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
+            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date);
 
             // Assert
             Assert.AreEqual(expectedPeriod, actualPeriod);
@@ -75,14 +79,16 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
+            var date = DateTime.Today;
+
             var magazine = "50000006"; // NewRelease("Animal Tales")
             var customer = "Tom";
 
             // Act
             var expectedPeriod = 5;
 
-            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
-            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem);
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
+            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date);
 
             // Assert
             Assert.AreEqual(expectedPeriod, actualPeriod);
@@ -94,14 +100,16 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
+            var date = DateTime.Today;
+
             var magazine = "48039481"; // MovieDVD("Christmas Movie")
             var customer = "Tom";
 
             // Act
             var expectedPeriod = 3;
 
-            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
-            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem);
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
+            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date);
 
             // Assert
             Assert.AreEqual(expectedPeriod, actualPeriod);
@@ -112,14 +120,16 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
+            var date = DateTime.Today;
+
             var magazine = "48039481"; // MovieDVD("Christmas Movie")
             var customer = "Tom";
 
             // Act
-            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
-            checkoutBook.SetDay(DateTime.Today.AddDays(1));
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
+            //checkoutBook.SetDay(DateTime.Today.AddDays(1));
             
-            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem);
+            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date.AddDays(1));
             var expectedPeriod = 2;
 
             // Assert
@@ -131,14 +141,16 @@ namespace LibraryCatalog.Tests
         {
             // Arrange
             var checkoutBook = new Library(TestLibrary());
+            var date = DateTime.Today;
+
             var magazine = "48039481"; // MovieDVD("Christmas Movie")
             var customer = "Tom";
 
             // Act
-            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
-            checkoutBook.SetDay(DateTime.Today.AddDays(5));
+            var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
+            //checkoutBook.SetDay(DateTime.Today.AddDays(5));
 
-            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem);
+            var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date.AddDays(5));
             var expectedPeriod = -2;
 
             // Assert

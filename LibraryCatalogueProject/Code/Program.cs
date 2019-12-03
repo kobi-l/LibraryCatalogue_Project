@@ -49,27 +49,27 @@ namespace LibraryCatalogueProject
 			CheckoutBook(customer, booksLibrary, itemKey1);
 			Console.WriteLine("*****************");
 
-            // 3.1 Adding '50000003' second time: <-- Expected message  - 'Girl's World' had been taken out! It should be back in 7 days.
-            CheckoutBook(customer, booksLibrary, itemKey1);
-            Console.WriteLine("*****************");
+			// 3.1 Adding '50000003' second time: <-- Expected message  - 'Girl's World' had been taken out! It should be back in 7 days.
+			CheckoutBook(customer, booksLibrary, itemKey1);
+			Console.WriteLine("*****************");
 
-            // 3.2 Adding item that doesn't exists: <-- Expected EXCEPTION message - 'This item does not exist.'
+            // 3.2 Adding item that doesn't exists: <-- Expected EXCEPTION message - '500000033' item does not exist in our library.
             var itemKey2 = "500000033"; 
 			CheckoutBook(customer, booksLibrary, itemKey2);
 			Console.WriteLine("*****************");
 
-            // 3.3 Adding a NewReleaseBook --> "The Guardians"
-            var itemKey3 = "70000010"; 
+			// 3.3 Adding a NewReleaseBook --> "The Guardians"
+			var itemKey3 = "70000010"; 
 			CheckoutBook(customer, booksLibrary, itemKey3);
 			Console.WriteLine("*****************");
 
-            // 3.4 Adding a Book --> "Harry Potter and the Deathly Hallows"
-            var itemKey4 = "48039486"; 
+			// 3.4 Adding a Book --> "Harry Potter and the Deathly Hallows"
+			var itemKey4 = "48039486"; 
 			CheckoutBook(customer, booksLibrary, itemKey4);
 			Console.WriteLine("*****************");
 
-            // 3.5 Adding a DVD --> "Men In Black"
-            var itemKey5 = "211504DV";  
+			// 3.5 Adding a DVD --> "Men In Black"
+			var itemKey5 = "211504DV";  
 			CheckoutBook(customer, booksLibrary, itemKey5);
 			Console.WriteLine("*****************");
 
@@ -77,93 +77,63 @@ namespace LibraryCatalogueProject
 			Console.WriteLine("Customer Items: ");
 			foreach (var item in booksLibrary.CustomerItems(customer.FullName))
 			{
-				Console.WriteLine(item);
+				Console.WriteLine(item.ItemMessage);
 			}
 			Console.WriteLine("*****************");
 
-			// 5. Add Days:
-			booksLibrary.SetDay(DateTime.Today.AddDays(6));
-
-			// 6. Get overdue books:
+			// 5. Get overdue books:
 			Console.WriteLine("Overdue items: ");
-			foreach (var item in booksLibrary.OverdueItemsByCustomerName(customer.FullName))
+			foreach (var item in booksLibrary.OverdueItemsByCustomerName(customer.FullName, DateTime.Today.AddDays(6)))
 			{
-				Console.WriteLine(item);
+				Console.WriteLine(item.ItemMessage);
 			}
 			Console.WriteLine("*****************");
 
 
-			// 7. Returning books:
+			// 6. Returning books:
 			Console.WriteLine("Returned items: ");
-            ReturnMaterials(booksLibrary, itemKey1); // <-- Expected message - 'Item returned.Thank you!'
-            ReturnMaterials(booksLibrary, itemKey2); // <--  Expected EXCEPTION message - 'This item does not exist.'
-            ReturnMaterials(booksLibrary, itemKey3); // <-- Expected message - 'You owe the library $1.5 because 'The Guardians' is 1 days overdue. Item returned. Thank you!'
-            ReturnMaterials(booksLibrary, itemKey4); // <-- Expected message - 'Item returned.Thank you!'
-            ReturnMaterials(booksLibrary, itemKey5); // <-- Expected message - 'You owe the library $3.5 because 'Men In Black' is 3 days overdue. Item returned. Thank you!'
+			var date = DateTime.Today.AddDays(6);
+			ReturnMaterials(booksLibrary, itemKey1, date); // <-- Expected message - 'Item returned.Thank you!'
+			ReturnMaterials(booksLibrary, itemKey2, date); // <-- Expected EXCEPTION message - '500000033' item does not exist in our library.
+            ReturnMaterials(booksLibrary, itemKey3, date); // <-- Expected message - 'You owe the library $1.5 because 'The Guardians' is 1 days overdue. Item returned. Thank you!'
+			ReturnMaterials(booksLibrary, itemKey4, date); // <-- Expected message - 'Item returned.Thank you!'
+			ReturnMaterials(booksLibrary, itemKey5, date); // <-- Expected message - 'You owe the library $3.5 because 'Men In Black' is 3 days overdue. Item returned. Thank you!'
 
-
-            // THIS IS HOW I WAS RETURNING MATERIALS BEFORE I HAVE EXTRACTED TO the ReturnMaterials().
-            //foreach (var item in booksLibrary.ReturnAnItem("50000000"))
-            //{
-            //	Console.WriteLine(item);
-            //}
-            //foreach (var item in booksLibrary.ReturnAnItem("50000003"))
-            //{
-            //	Console.WriteLine(item);
-            //}
-            //foreach (var item in booksLibrary.ReturnAnItem("70000010"))
-            //{
-            //	Console.WriteLine(item);
-            //}
-            //foreach (var item in booksLibrary.ReturnAnItem("48039486"))
-            //{
-            //	Console.WriteLine(item);
-            //}
-            //foreach (var item in booksLibrary.ReturnAnItem("211504DV"))
-            //{
-            //	Console.WriteLine(item);
-            //}
-
-            Console.ReadLine();
+			Console.ReadLine();
 		}
 
-		public static void CheckoutBook(Customer customer, Library libraryCatalogue, string itemName)
+		public static void CheckoutBook(Customer customer, Library libraryCatalogue, string itemISBN)
 		{
 			try
 			{
-				if (libraryCatalogue.CheckItemAvailability(itemName, out var message))
+				if (libraryCatalogue.CheckItemAvailability(itemISBN))
 				{
-					var item = libraryCatalogue.CheckOutAnItem(itemName, customer.FullName);
+					var item = libraryCatalogue.CheckOutAnItem(itemISBN, customer.FullName, DateTime.Today);
 					Console.WriteLine($"You just checked out '{item.Title}'. " +
 					$"\nNote: Please return it in {item.LengthOfCheckoutPeriod.TotalDays} days.\n");
 				}
-				else
-					Console.WriteLine(message);
 			}
 			catch (LibraryItemAlreadyCheckedOutException ex)
 			{
 				Console.WriteLine(ex.Message);
 			}
-            catch (LibraryItemDoesntExistException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+			catch (LibraryItemDoesntExistException ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
 		}
 
-        public static void ReturnMaterials(Library libraryCatalogue, string itemKey)
-        {
-            try
-            {
-                foreach (var item in libraryCatalogue.ReturnAnItem(itemKey))
-                {
-                    Console.WriteLine(item);
-                }
-            }
-            catch (LibraryItemDoesntExistException ex)
-            {
+		public static void ReturnMaterials(Library libraryCatalogue, string itemKey, DateTime date)
+		{
+			try
+			{
+				Console.WriteLine(libraryCatalogue.ReturnAnItem(itemKey, date));
+			}
+			catch (LibraryItemDoesntExistException ex)
+			{
 
-                Console.WriteLine(ex.Message);
-            }
-        }
+				Console.WriteLine(ex.Message);
+			}
+		}
 	}
 }

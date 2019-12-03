@@ -16,7 +16,6 @@ namespace LibraryCatalogueProject
             double initialLateFee, double feePerLateDay)
         {
             LibraryCatalogue = collection; //<-- this gets passed in to the other constructor.
-            //LengthOfCheckoutPeriod = lengthOfCheckoutPeriod;
             InitialLateFee = initialLateFee;
             FeePerLateDay = feePerLateDay;
         }
