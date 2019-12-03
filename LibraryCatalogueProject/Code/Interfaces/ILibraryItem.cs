@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCatalogueProject
 {
+    // JUSTIN : You need to be setting ISBN so that you can pull out the key you need to check in and checkout out the items
     public interface ILibraryItem
     {
         // Properties: 
