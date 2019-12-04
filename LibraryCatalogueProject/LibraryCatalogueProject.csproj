@@ -109,7 +109,7 @@
     <Compile Include="Code\CustomExceptions\LibraryItemAlreadyCheckedOutException.cs" />
     <Compile Include="Code\CustomExceptions\LibraryItemDoesntExistException.cs" />
     <Compile Include="Code\Interfaces\ICustomerItems.cs" />
-    <Compile Include="Code\Interfaces\IItem.cs" />
+    <Compile Include="Code\Interfaces\ILibraryItemStatus.cs" />
     <Compile Include="Code\LibraryItems\Book.cs" />
     <Compile Include="Code\Interfaces\ILibraryItem.cs" />
     <Compile Include="Code\AbstractClasses\Library_AbstractClass.cs" />

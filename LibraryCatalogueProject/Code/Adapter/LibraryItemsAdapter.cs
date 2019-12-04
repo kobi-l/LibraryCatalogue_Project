@@ -15,7 +15,7 @@ namespace LibraryCatalog.Code.Adapter
         Overdue,
         CheckedOut
     }
-    public class LibraryItemsAdapter : IItem
+    public class LibraryItemsAdapter : ILibraryItemStatus
     {
         public ILibraryItem Item { get; }
         public int DaysTillDue { get; }

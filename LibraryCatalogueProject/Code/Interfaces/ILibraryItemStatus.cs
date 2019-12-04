@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LibraryCatalog.Code.Interfaces
 {
-    public interface IItem
+    public interface ILibraryItemStatus
     {
         ILibraryItem Item { get; }
         int DaysTillDue {get;}

@@ -107,9 +107,9 @@ namespace LibraryCatalogueProject
 
         public List<ILibraryItem> AllLibraryItems() => LibraryCatalogue.Values.ToList();
         public List<ILibraryItem> AllAvailableLibraryItems() => LibraryCatalogue.Values.Where(i => i.IsCheckedOut == false).ToList();
-        public List<IItem> LibraryItemsByType(string itemType, DateTime date)
+        public List<ILibraryItemStatus> LibraryItemsByType(string itemType, DateTime date)
         {
-            var listOfItems = new List<IItem>();
+            var listOfItems = new List<ILibraryItemStatus>();
             var library = LibraryCatalogue.Values.ToList();
 
             foreach (var item in library.Where(i => i.ItemType == itemType))
