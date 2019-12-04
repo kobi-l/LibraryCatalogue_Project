@@ -105,6 +105,19 @@ namespace LibraryCatalogueProject
             return item;
         }
 
+        public List<ILibraryItem> AllLibraryItems() => LibraryCatalogue.Values.ToList();
+        public List<ILibraryItem> AllAvailableLibraryItems() => LibraryCatalogue.Values.Where(i => i.IsCheckedOut == false).ToList();
+        public List<IItem> LibraryItemsByType(string itemType, DateTime date)
+        {
+            var listOfItems = new List<IItem>();
+            var library = LibraryCatalogue.Values.ToList();
+
+            foreach (var item in library.Where(i => i.ItemType == itemType))
+            {
+                listOfItems.Add(new LibraryItemsAdapter(item, DaysTillDue(item, date)));
+            }
+            return listOfItems;
+        } 
         public double CalculateLateFee(ILibraryItem item, DateTime date) => InitialLateFee + GetDaysLate(item, date) * FeePerLateDay;
         private double GetDaysLate(ILibraryItem item, DateTime currectDate) => (currectDate - (item.DayCheckedOut + item.LengthOfCheckoutPeriod)).Value.TotalDays;
     }

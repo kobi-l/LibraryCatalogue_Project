@@ -9,8 +9,6 @@ namespace LibraryCatalogueProject
     public class Book : LibraryItem_AbstractClass
     {
         const string Type = "Book";
-        public int PageCount { get; set; }
-
         public Book(string isbn, string itemTitle)
         {
             ISBN = isbn;

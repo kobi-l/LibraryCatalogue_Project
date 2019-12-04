@@ -9,7 +9,6 @@ namespace LibraryCatalogueProject
     public class Magazine : LibraryItem_AbstractClass
     {
         const string Type = "Magazine";
-        public int PageCount { get; set; }
         public Magazine(string isbn, string itemTitle)
         {
             ISBN = isbn;

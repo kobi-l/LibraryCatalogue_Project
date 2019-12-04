@@ -42,12 +42,6 @@ namespace LibraryCatalog.Tests
 
             // Assert
             Assert.ThrowsException<LibraryItemDoesntExistException>(act);
-
-            // Act
-            //var actual = checkoutBook.CheckOutAnItem(title, customer, date);
-
-            // Assert
-            //Assert.AreEqual(null, actual);
         }
 
         [TestMethod]
@@ -378,16 +372,5 @@ namespace LibraryCatalog.Tests
             // Assert
             Assert.AreEqual(expectedMessage, actual);
         }
-
-        //private void ArrangeTests()
-        //{
-        //    var checkoutBook = TestLibrary();
-        //    var library = new Library(checkoutBook);
-        //    var date = DateTime.Today;
-        //    var customer = "Tom";
-        //    var title = "48039481"; // <-- DVD, 3 days
-
-        //    library.CheckOutAnItem(title, customer, date);
-        //}
     }
 }

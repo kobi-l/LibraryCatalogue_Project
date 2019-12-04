@@ -9,7 +9,7 @@ namespace LibraryCatalog.Tests
     [TestClass]
     public class LibraryItems_OverdueItems_Tests
     {
-        #region FAKE LIBRARY
+        #region TEST LIBRARY
         public Dictionary<string, ILibraryItem> TestLibrary()
         {
             return new Dictionary<string, ILibraryItem>()
@@ -27,45 +27,156 @@ namespace LibraryCatalog.Tests
         }
         #endregion
 
-        // CheckOutAnItem Method Tests: 
-        [TestMethod]
-        public void CheckOutAnItem_CheckingOutItemThatDoesntExist_Expected_NULL_Test()
+        const string Customer = "Tom";
+        public Library CreateALibraryAndCheckoutItems()
         {
             // Arrange
-            var itemsCatalogue = new Library(TestLibrary());
-            var date = DateTime.Today;
-            var customer = "Tom";
+            var library = new Library(TestLibrary());
+            var currentDate = DateTime.Today;
 
-            var isbnBook = "48039480";
-            var isbnDVD = "48039481";
-            var isbnMagazine = "50000004";
-            var isbnNewRelease = "50000006";
+            const string isbnBook = "48039480";
+            const string isbnDVD = "48039481";
+            const string isbnMagazine = "50000004";
+            const string isbnNewRelease = "50000006";
 
             // chechout items:
-            itemsCatalogue.CheckOutAnItem(isbnBook, customer, date);
-            itemsCatalogue.CheckOutAnItem(isbnDVD, customer, date);
-            itemsCatalogue.CheckOutAnItem(isbnMagazine, customer, date);
-            itemsCatalogue.CheckOutAnItem(isbnNewRelease, customer, date);
+            library.CheckOutAnItem(isbnBook, Customer, currentDate);
+            library.CheckOutAnItem(isbnDVD, Customer, currentDate);
+            library.CheckOutAnItem(isbnMagazine, Customer, currentDate);
+            library.CheckOutAnItem(isbnNewRelease, Customer, currentDate);
 
-            // get itmes by Customer name
-            itemsCatalogue.CustomerItems(customer); // <-- should have FOUR items
+            return library;
+        }
+
+        [TestMethod]
+        public void OverdueItems_Adding6Days_ResultsInTwoOverdueItems()
+        {
+            // Arrange
+            var library = CreateALibraryAndCheckoutItems();
+            var currentDate = DateTime.Today;
 
             // Act
-            // get overdue items:
-            var overdueItems1 = itemsCatalogue.OverdueItemsByCustomerName(customer, date.AddDays(6)); // <-- should have TWO items
-            itemsCatalogue.CustomerItems(customer); // <-- should have FOUR items
+            currentDate = currentDate.AddDays(6);
+            var overdueItems = library.OverdueItemsByCustomerName(Customer, currentDate); 
 
-            foreach (var item in overdueItems1)
-            {
-                itemsCatalogue.ReturnAnItem(item.Item.ISBN, date);
-            }
+            // Assert
+            // Asserting the overdue items list - Expected to be '2'.
+            Assert.AreEqual(2, overdueItems.Count);
+        }
 
-            // Assert overdue items list after returnig overdue items - Expected to be '0'.
-            Assert.AreEqual(0, itemsCatalogue.OverdueItemsByCustomerName(customer, date.AddDays(6)).Count);
+        [TestMethod]
+        public void OverdueItems_Adding6Days_CustomerItemsListIncludesAllItems()
+        {
+            // Arrange
+            var library = CreateALibraryAndCheckoutItems();
 
-            // Assert customer items list after returnig overdue items - expected to be '2'.
-            Assert.AreEqual(2, itemsCatalogue.CustomerItems(customer).Count);
+            // Act
+            var customerItems = library.CustomerItems(Customer); 
 
+            // Assert
+            // Asserting the CustomerItems list - Expected to be '4'.
+            Assert.AreEqual(4, customerItems.Count);
+        }
+
+        [TestMethod]
+        public void OverdueItems_Adding6DaysAndReturnigOverdueItems_ExpectedZeroOverdueItems()
+        {
+            // Arrange
+            var library = CreateALibraryAndCheckoutItems();
+            var currentDate = DateTime.Today;
+
+            // Act
+            currentDate = currentDate.AddDays(6);
+            var overdueItems = library.OverdueItemsByCustomerName(Customer, currentDate);
+
+            foreach (var item in overdueItems)
+                library.ReturnAnItem(item.Item.ISBN, currentDate);
+
+            // Assert
+            // Asserting the OverdueItems list - Expected to be '0'.
+            Assert.AreEqual(0, library.OverdueItemsByCustomerName(Customer, currentDate).Count);
+        }
+
+        [TestMethod]
+        public void OverdueItems_Adding6DaysAndReturnigOverdueItems_ExpectedTwoInCustomerList()
+        {
+            // Arrange
+            var library = CreateALibraryAndCheckoutItems();
+            var currentDate = DateTime.Today;
+
+            // Act
+            currentDate = currentDate.AddDays(6);
+            var overdueItems = library.OverdueItemsByCustomerName(Customer, currentDate);
+
+            foreach (var item in overdueItems)
+                library.ReturnAnItem(item.Item.ISBN, currentDate);
+
+            // Assert
+            // Asserting the CustomerItems list - Expected to be '2'.
+            Assert.AreEqual(2, library.CustomerItems(Customer).Count);
+        }
+
+        [TestMethod]
+        public void OverdueItems_AddingDaysSameAsCheckoutPeriod_ExpectedTwoInCustomerList()
+        {
+            // Arrange
+            var library = new Library(TestLibrary());
+            var currentDate = DateTime.Today;
+
+            // Checkout an items:
+            library.CheckOutAnItem("211505DV", Customer, currentDate); // DVD
+
+            // Act
+            currentDate = currentDate.AddDays(2);
+            var overdueItems = library.OverdueItemsByCustomerName(Customer, currentDate);
+
+            // Assert
+            // Asserting the OverdueItems list - Expected to be '0'.
+            Assert.AreEqual(0, overdueItems.Count);
+        }
+
+        [TestMethod]
+        public void OverdueItems_Adding6DaysAndCheckingOutMoreItems_ExpectedTwoInCustomerList()
+        {
+            // Arrange
+            var library = CreateALibraryAndCheckoutItems();
+            var currentDate = DateTime.Today;
+
+            // Act
+            currentDate = currentDate.AddDays(6);
+
+            // Asserting the OverdueItems list - Expected to be '2'.
+            var overdueItems = library.OverdueItemsByCustomerName(Customer, currentDate);
+            Assert.AreEqual(2, overdueItems.Count);
+
+            // Asserting CustomerItems list - Expected, 4.
+            var customerItems = library.CustomerItems(Customer).Count;
+            Assert.AreEqual(4, customerItems);
+
+            // Checkout two more items:
+            library.CheckOutAnItem("70000013", Customer, currentDate); // New Release
+            library.CheckOutAnItem("211505DV", Customer, currentDate); // DVD
+
+            // Asserting CustomerItems list - Expected, 6.
+            customerItems = library.CustomerItems(Customer).Count;
+            Assert.AreEqual(6, customerItems);
+
+            // Add four more days:
+            currentDate = currentDate.AddDays(8);
+
+            // Asserting the OverdueItems list - Expected to be '6'.
+            overdueItems = library.OverdueItemsByCustomerName(Customer, currentDate);
+            Assert.AreEqual(6, overdueItems.Count);
+
+            // Returning items
+            foreach (var item in overdueItems)
+                library.ReturnAnItem(item.Item.ISBN, currentDate);
+
+            // Asserting the CustomerItems list - Expected to be '0'.
+            Assert.AreEqual(0, library.CustomerItems(Customer).Count);
+
+            // Asserting the OverdueItems list - Expected to be '0'.
+            Assert.AreEqual(0, library.OverdueItemsByCustomerName(Customer, currentDate).Count);
         }
     }
 }

@@ -28,19 +28,6 @@ namespace LibraryCatalog.Tests
 
         #endregion
 
-
-        //private void ArrangeTestMethod()
-        //{
-        //    var checkoutBook = TestLibrary();
-        //    var library = new Library(checkoutBook);
-        //    var date = DateTime.Today;
-
-        //    var customer = "Tom";
-        //    var title = "48039481"; // <-- DVD, 3 days
-
-        //    library.CheckOutAnItem(title, customer, date);
-        //}
-
         [TestMethod]
         public void SetIsCheckedOut_Expected_IsSetToTrueWhenItemIsCheckedOut_Test()
         {
