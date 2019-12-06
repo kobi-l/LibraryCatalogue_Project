@@ -112,6 +112,7 @@
     <Compile Include="Code\Adapter\LibraryItemsAdapter.cs" />
     <Compile Include="Code\CustomExceptions\LibraryItemAlreadyCheckedOutException.cs" />
     <Compile Include="Code\CustomExceptions\LibraryItemDoesntExistException.cs" />
+    <Compile Include="Code\Enums\LibraryItemStatus.cs" />
     <Compile Include="Code\Interfaces\ICustomerItems.cs" />
     <Compile Include="Code\Interfaces\ILibraryItemStatus.cs" />
     <Compile Include="Code\LibraryItems\Book.cs" />

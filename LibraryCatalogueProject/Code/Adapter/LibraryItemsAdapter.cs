@@ -1,4 +1,5 @@
-﻿using LibraryCatalog.Code.Interfaces;
+﻿using LibraryCatalog.Code.Enums;
+using LibraryCatalog.Code.Interfaces;
 using LibraryCatalogueProject;
 using System;
 using System.Collections.Generic;
@@ -8,13 +9,6 @@ using System.Threading.Tasks;
 
 namespace LibraryCatalog.Code.Adapter
 {
-    public enum LibraryItemStatus
-    {
-        Available,
-        Due,
-        Overdue,
-        CheckedOut
-    }
     public class LibraryItemsAdapter : ILibraryItemStatus
     {
         public ILibraryItem Item { get; }

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using LibraryCatalog.Code.Adapter;
+using LibraryCatalog.Code.Enums;
 using LibraryCatalog.Code.LibraryItems;
 using LibraryCatalogueProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
