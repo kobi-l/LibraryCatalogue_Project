@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 
 namespace LibraryCatalog.Tests
 {
@@ -38,10 +39,15 @@ namespace LibraryCatalog.Tests
 
 
             // Act
-            void act() => checkoutBook.CheckOutAnItem(title, customer, date);
+            //void act() => checkoutBook.CheckOutAnItem(title, customer, date);
 
             // Assert
-            Assert.ThrowsException<LibraryItemDoesntExistException>(act);
+            // Assert.ThrowsException<LibraryItemDoesntExistException>(act);
+
+            // Or using Fluent Assertion
+            Action act = () => checkoutBook.CheckOutAnItem(title, customer, date);
+            act.Should().Throw<LibraryItemDoesntExistException>();
+
         }
 
         [TestMethod]
@@ -58,7 +64,9 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook.CheckOutAnItem(title, customer, date);
 
             // Assert
-            Assert.AreNotEqual(null, actual);
+            //Assert.AreNotEqual(null, actual);
+
+            actual.Should().NotBeNull();
         }
 
 
@@ -72,10 +80,13 @@ namespace LibraryCatalog.Tests
             var title = "48039480454";
 
             // Act
-            void act() => checkoutBook.CheckItemAvailability(title);
-
+            //void act() => checkoutBook.CheckItemAvailability(title);
             // Assert
-            Assert.ThrowsException<LibraryItemDoesntExistException>(act);
+            //Assert.ThrowsException<LibraryItemDoesntExistException>(act);
+
+            // Fluen assertion:
+            Action act = () => checkoutBook.CheckItemAvailability(title);
+            act.Should().Throw<LibraryItemDoesntExistException>();
         }
 
         [TestMethod]
@@ -86,11 +97,14 @@ namespace LibraryCatalog.Tests
             var title = "48039481"; 
 
             // Act
-            var expected = true;
+            //var expected = true;
             var actual = checkoutBook.CheckItemAvailability(title);
-            
+
             // Assert
-            Assert.AreEqual(expected, actual);
+            //Assert.AreEqual(expected, actual);
+
+            // Fluet Assertion:
+            actual.Should().BeTrue();
         }
 
         [TestMethod]
@@ -106,10 +120,13 @@ namespace LibraryCatalog.Tests
             checkoutBook.CheckOutAnItem(isbn, customer, date);
 
             // Act
-            void act() => checkoutBook.CheckItemAvailability(isbn);
-
+            //void act() => checkoutBook.CheckItemAvailability(isbn);
             // Assert
-            Assert.ThrowsException<LibraryItemAlreadyCheckedOutException>(act);
+            //Assert.ThrowsException<LibraryItemAlreadyCheckedOutException>(act);
+
+            // Fluent Assertion:
+            Action act = () => checkoutBook.CheckItemAvailability(isbn);
+            act.Should().Throw<LibraryItemAlreadyCheckedOutException>();
         }
 
 
@@ -126,7 +143,10 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook.CustomerItems(customer);
 
             // Assert
-            Assert.AreEqual(0, actual.Length());
+            //Assert.AreEqual(0, actual.Length());
+
+            //Fluent Assertion
+            actual.Length().Should().Be(0);
         }
 
         [TestMethod]
@@ -150,7 +170,9 @@ namespace LibraryCatalog.Tests
             var expected = 3;
 
             // Assert
-            Assert.AreEqual(expected, actual.Count);
+            //Assert.AreEqual(expected, actual.Count);
+
+            actual.Count.Should().Be(expected);
         }
 
         [TestMethod]
@@ -176,7 +198,10 @@ namespace LibraryCatalog.Tests
             var actualCustomer2 = checkoutBook.CustomerItems(customer2);
 
             // Assert
-            Assert.AreNotEqual(actualCustomer2.Count, actualCustomer1.Count);
+            //Assert.AreNotEqual(actualCustomer2.Count, actualCustomer1.Count);
+
+            // Fluent Assertion
+            actualCustomer1.Count.Should().NotBe(actualCustomer2.Count);
         }
 
         [TestMethod]
@@ -289,7 +314,10 @@ namespace LibraryCatalog.Tests
             var actual = library.OverdueItemsByCustomerName(customer, date.AddDays(6));
 
             // Assert
-            Assert.AreEqual(expected, actual.Count);
+            // Assert.AreEqual(expected, actual.Count);
+
+            // Fluent Assertion
+            actual.Count.Should().Be(expected);
         }
 
         [TestMethod]
@@ -324,10 +352,14 @@ namespace LibraryCatalog.Tests
 
             // Act
             //Action act = () => library.ReturnAnItem("INVALID").FirstOrDefault();
-            void act() => library.ReturnAnItem("INVALID", date).FirstOrDefault();
-
+            //void act() => library.ReturnAnItem("INVALID", date).FirstOrDefault();
             // Assert
-            Assert.ThrowsException<LibraryItemDoesntExistException>(act);
+            //Assert.ThrowsException<LibraryItemDoesntExistException>(act);
+
+            // Fluent Assertion
+            Action act = () => library.ReturnAnItem("INVALID", date).FirstOrDefault();
+
+            act.Should().Throw<LibraryItemDoesntExistException>();
         }
 
         [TestMethod]
@@ -348,7 +380,9 @@ namespace LibraryCatalog.Tests
             var actual = library.ReturnAnItem(isbn, date);
 
             // Assert
-            Assert.AreEqual(expectedMessage, actual);
+            //Assert.AreEqual(expectedMessage, actual);
+
+            actual.Should().Be(expectedMessage);
         }
 
         [TestMethod]
@@ -370,7 +404,9 @@ namespace LibraryCatalog.Tests
             var actual = library.ReturnAnItem(isbn, date.AddDays(6));
 
             // Assert
-            Assert.AreEqual(expectedMessage, actual);
+            //Assert.AreEqual(expectedMessage, actual);
+
+            actual.Should().Be(expectedMessage);
         }
     }
 }

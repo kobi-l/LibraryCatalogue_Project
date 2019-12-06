@@ -3,9 +3,7 @@ using LibraryCatalogueProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace LibraryCatalog.Tests
 {
@@ -42,7 +40,8 @@ namespace LibraryCatalog.Tests
             var itemsCount = library.AllLibraryItems().Count;
 
             // Assert
-            Assert.AreEqual(8, itemsCount);
+            //Assert.AreEqual(8, itemsCount);
+            itemsCount.Should().Be(8); //<-- using the FluentAssertion
         }
 
         [TestMethod]
@@ -58,7 +57,8 @@ namespace LibraryCatalog.Tests
             var itemsCount = library.AllLibraryItems().Count;
 
             // Assert
-            Assert.AreEqual(8, itemsCount);
+            //Assert.AreEqual(8, itemsCount);
+            itemsCount.Should().Be(8);
         }
 
         [TestMethod]
@@ -83,7 +83,9 @@ namespace LibraryCatalog.Tests
                 }
             }
             // Assert
-            Assert.AreEqual(1, checkedOutItems.Count);
+            //Assert.AreEqual(1, checkedOutItems.Count);
+
+            checkedOutItems.Count.Should().Be(1);
         }
 
         [TestMethod]
@@ -108,7 +110,9 @@ namespace LibraryCatalog.Tests
                 }
             }
             // Assert
-            Assert.AreEqual(Customer, checkedOutItems[0].WhoWasItCheckeoutTo);
+            //Assert.AreEqual(Customer, checkedOutItems[0].WhoWasItCheckeoutTo);
+
+            checkedOutItems[0].WhoWasItCheckeoutTo.Should().Be(Customer);
         }
 
         [TestMethod]
@@ -124,7 +128,8 @@ namespace LibraryCatalog.Tests
             var libraryItems = library.AllAvailableLibraryItems();
 
             // Assert
-            Assert.AreEqual(7, libraryItems.Count);
+            //Assert.AreEqual(7, libraryItems.Count);
+            libraryItems.Count.Should().Be(7);
         }
     }
 }

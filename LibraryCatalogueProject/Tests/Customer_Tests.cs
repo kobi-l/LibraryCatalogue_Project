@@ -1,10 +1,6 @@
 ﻿using LibraryCatalogueProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FluentAssertions;
 
 namespace LibraryCatalog.Tests
 {
@@ -15,15 +11,25 @@ namespace LibraryCatalog.Tests
         public void CreateNewCustomer_NewCustomerShouldBeCreatedSuccessfully()
         {
             // Arrange
-            var firstName = "Sam";
+            string firstName = null;
             var lastName = "Foxy";
+
+            // Conditional Directives!!! Allow to include or exclude blocks of code!
+#if DEBUG 
+            firstName = "Samantha";;
+#elif RELEASE
+            firstName = "Melania";
+# endif
 
             // Act
             var customer = new Customer(firstName, lastName);
-            var expected = firstName + " " + lastName;
+            //var expected = firstName + " " + lastName;
 
             // Assert
-            Assert.AreEqual(expected, customer.FullName);
+            //Assert.AreEqual(expected, customer.FullName);
+
+            // Assert using FluentAssertions
+            customer.FullName.Should().Be(firstName + " " + lastName, "Because Full Name consists of First and Last names");
         }
     }
 }

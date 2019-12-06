@@ -1,11 +1,9 @@
-﻿using LanguageExt.ClassInstances.Pred;
-using LibraryCatalog.Code.LibraryItems;
+﻿using LibraryCatalog.Code.LibraryItems;
 using LibraryCatalogueProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using FluentAssertions;
 
 
 namespace LibraryCatalog.Tests
@@ -42,7 +40,8 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook.CheckOutAnItem(title, customer, date);
 
             // Assert
-            Assert.AreEqual(true, actual.IsCheckedOut);
+            //Assert.AreEqual(true, actual.IsCheckedOut);
+            actual.IsCheckedOut.Should().Be(true);
         }
 
         [TestMethod]
@@ -59,7 +58,8 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook.CheckOutAnItem(title, customer, date);
 
             // Assert
-            Assert.AreEqual(customer, actual.WhoWasItCheckeoutTo);
+            //Assert.AreEqual(customer, actual.WhoWasItCheckeoutTo);
+            actual.WhoWasItCheckeoutTo.Should().Be(customer, because: "We want to know a Customer it was checked out to.");
         }
 
         [TestMethod]
@@ -76,7 +76,8 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook.CheckOutAnItem(title, customer, date);
 
             // Assert
-            Assert.AreEqual(DateTime.Today.Day, actual.DayCheckedOut.Value.Day);
+            //Assert.AreEqual(DateTime.Today.Day, actual.DayCheckedOut.Value.Day);
+            actual.DayCheckedOut.Value.Day.Should().Be(DateTime.Today.Day);
         }
 
         [TestMethod]
@@ -99,7 +100,8 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook[title].IsCheckedOut;
 
             // Assert
-            Assert.AreEqual(expectedIsCheckedOut, actual);
+            //Assert.AreEqual(expectedIsCheckedOut, actual);
+            actual.Should().Be(expectedIsCheckedOut);
         }
 
         [TestMethod]
@@ -120,7 +122,8 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook[title].DayCheckedOut;
 
             // Assert
-            Assert.AreEqual(null, actual);
+            //Assert.AreEqual(null, actual);
+            actual.Should().Be(null);
         }
 
         [TestMethod]
@@ -141,7 +144,8 @@ namespace LibraryCatalog.Tests
             var actual = checkoutBook[title].WhoWasItCheckeoutTo;
 
             // Assert
-            Assert.AreEqual(null, actual);
+            //Assert.AreEqual(null, actual);
+            actual.Should().Be(null);
         }
     }
 }

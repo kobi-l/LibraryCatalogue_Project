@@ -1,4 +1,5 @@
-﻿using LibraryCatalog.Code.Adapter;
+﻿using FluentAssertions;
+using LibraryCatalog.Code.Adapter;
 using LibraryCatalog.Code.LibraryItems;
 using LibraryCatalogueProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -67,7 +68,9 @@ namespace LibraryCatalog.Tests
             var expectedStatus = LibraryItemStatus.Available;
 
             // Assert
-            Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+            //Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+
+            listOfItems[0].ItemStatus.Should().Be(expectedStatus);
         }
 
         [TestMethod]
@@ -87,7 +90,9 @@ namespace LibraryCatalog.Tests
             var expectedStatus = LibraryItemStatus.CheckedOut;
 
             // Assert
-            Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+            //Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+
+            listOfItems[0].ItemStatus.Should().Be(expectedStatus);
         }
 
         [TestMethod]
@@ -107,7 +112,9 @@ namespace LibraryCatalog.Tests
             var expectedStatus = LibraryItemStatus.Due;
 
             // Assert
-            Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+            // Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+
+            listOfItems[0].ItemStatus.Should().Be(expectedStatus);
         }
 
         [TestMethod]
@@ -127,7 +134,9 @@ namespace LibraryCatalog.Tests
             var expectedStatus = LibraryItemStatus.Overdue;
 
             // Assert
-            Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+            //Assert.AreEqual(expectedStatus, listOfItems[0].ItemStatus);
+
+            listOfItems[0].ItemStatus.Should().Be(expectedStatus);
         }
     }
 }

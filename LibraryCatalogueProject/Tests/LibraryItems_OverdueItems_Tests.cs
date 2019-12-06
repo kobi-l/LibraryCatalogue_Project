@@ -1,4 +1,5 @@
-﻿using LibraryCatalog.Code.LibraryItems;
+﻿using FluentAssertions;
+using LibraryCatalog.Code.LibraryItems;
 using LibraryCatalogueProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -61,7 +62,8 @@ namespace LibraryCatalog.Tests
 
             // Assert
             // Asserting the overdue items list - Expected to be '2'.
-            Assert.AreEqual(2, overdueItems.Count);
+            //Assert.AreEqual(2, overdueItems.Count);
+            overdueItems.Count.Should().Be(2);
         }
 
         [TestMethod]
@@ -75,7 +77,9 @@ namespace LibraryCatalog.Tests
 
             // Assert
             // Asserting the CustomerItems list - Expected to be '4'.
-            Assert.AreEqual(4, customerItems.Count);
+            //Assert.AreEqual(4, customerItems.Count);
+
+            customerItems.Count.Should().Be(4);
         }
 
         [TestMethod]
@@ -94,7 +98,9 @@ namespace LibraryCatalog.Tests
 
             // Assert
             // Asserting the OverdueItems list - Expected to be '0'.
-            Assert.AreEqual(0, library.OverdueItemsByCustomerName(Customer, currentDate).Count);
+            //Assert.AreEqual(0, library.OverdueItemsByCustomerName(Customer, currentDate).Count);
+
+            library.OverdueItemsByCustomerName(Customer, currentDate).Count.Should().Be(0);
         }
 
         [TestMethod]
@@ -113,7 +119,9 @@ namespace LibraryCatalog.Tests
 
             // Assert
             // Asserting the CustomerItems list - Expected to be '2'.
-            Assert.AreEqual(2, library.CustomerItems(Customer).Count);
+            //Assert.AreEqual(2, library.CustomerItems(Customer).Count);
+
+            library.CustomerItems(Customer).Count.Should().Be(2);
         }
 
         [TestMethod]
@@ -132,7 +140,9 @@ namespace LibraryCatalog.Tests
 
             // Assert
             // Asserting the OverdueItems list - Expected to be '0'.
-            Assert.AreEqual(0, overdueItems.Count);
+            //Assert.AreEqual(0, overdueItems.Count);
+
+            overdueItems.Count.Should().Be(0);
         }
 
         [TestMethod]
