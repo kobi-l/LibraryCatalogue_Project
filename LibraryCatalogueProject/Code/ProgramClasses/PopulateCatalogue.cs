@@ -7,7 +7,18 @@ namespace LibraryCatalogueProject
 {
     public class PopulateCatalogue
     {
-        
+        // using XmlDocument 
+        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(XmlDocument xmlFile)
+        {
+            return ProcessXML(xmlFile);
+        }
+        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(string xmlFilePath)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(xmlFilePath);
+
+            return ProcessXML(doc);
+        }
         private Dictionary<string, ILibraryItem> ProcessXML(XmlDocument xmlFile)
         {
             var newDictionary = new Dictionary<string, ILibraryItem>(StringComparer.OrdinalIgnoreCase); // StringComparer.OrdinalIgnoreCase
@@ -50,21 +61,6 @@ namespace LibraryCatalogueProject
                 }  
             }
             return newDictionary;
-        }
-
-        // using XmlDocument 
-        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(XmlDocument xmlFile) 
-        {
-            return ProcessXML(xmlFile);
-        }
-
-        public Dictionary<string, ILibraryItem> GetItemsFromXmlDocument(string xmlFilePath)
-        {
-
-            XmlDocument doc = new XmlDocument();
-            doc.Load(xmlFilePath); 
-
-            return ProcessXML(doc);
         }
 
         private ILibraryItem CreateDVD(string isbn, string itemTitle)

@@ -1,4 +1,5 @@
-﻿using LibraryCatalog.Code.CustomExceptions;
+﻿using FluentAssertions;
+using LibraryCatalog.Code.CustomExceptions;
 using LibraryCatalog.Code.LibraryItems;
 using LibraryCatalogueProject;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -46,12 +47,7 @@ namespace LibraryCatalog.Tests
             // Assert
             Assert.AreEqual(expectedDays, actualDays);
 
-            //OR this way:
-            // ACT:
-            //var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer);
-            //var actualDays = checkedOutItem.LengthOfCheckoutPeriod.TotalDays;
-            // ASSERT:
-            //Assert.AreEqual(expectedDays, actualDays);
+            actualDays.Should().Be(actualDays);
         }
 
         [TestMethod]
@@ -71,7 +67,9 @@ namespace LibraryCatalog.Tests
             var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date);
 
             // Assert
-            Assert.AreEqual(expectedPeriod, actualPeriod);
+            //Assert.AreEqual(expectedPeriod, actualPeriod);
+
+            actualPeriod.Should().Be(expectedPeriod);
         }
 
         [TestMethod]
@@ -91,7 +89,9 @@ namespace LibraryCatalog.Tests
             var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date);
 
             // Assert
-            Assert.AreEqual(expectedPeriod, actualPeriod);
+            //Assert.AreEqual(expectedPeriod, actualPeriod);
+
+            actualPeriod.Should().Be(expectedPeriod);
         }
 
 
@@ -112,7 +112,9 @@ namespace LibraryCatalog.Tests
             var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date);
 
             // Assert
-            Assert.AreEqual(expectedPeriod, actualPeriod);
+            //Assert.AreEqual(expectedPeriod, actualPeriod);
+
+            actualPeriod.Should().Be(expectedPeriod);
         }
 
         [TestMethod]
@@ -127,13 +129,14 @@ namespace LibraryCatalog.Tests
 
             // Act
             var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
-            //checkoutBook.SetDay(DateTime.Today.AddDays(1));
             
             var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date.AddDays(1));
             var expectedPeriod = 2;
 
             // Assert
-            Assert.AreEqual(expectedPeriod, actualPeriod);
+            //Assert.AreEqual(expectedPeriod, actualPeriod);
+
+            actualPeriod.Should().Be(expectedPeriod);
         }
 
         [TestMethod]
@@ -148,13 +151,14 @@ namespace LibraryCatalog.Tests
 
             // Act
             var checkedOutItem = checkoutBook.CheckOutAnItem(magazine, customer, date);
-            //checkoutBook.SetDay(DateTime.Today.AddDays(5));
 
             var actualPeriod = checkoutBook.DaysTillDue(checkedOutItem, date.AddDays(5));
             var expectedPeriod = -2;
 
             // Assert
-            Assert.AreEqual(expectedPeriod, actualPeriod);
+            // Assert.AreEqual(expectedPeriod, actualPeriod);
+
+            actualPeriod.Should().Be(expectedPeriod);
         }
     }
 }

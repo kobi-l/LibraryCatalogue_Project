@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LibraryCatalogueProject;
-using System.Collections.Generic;
+using FluentAssertions;
 using System.Linq;
 using System.Xml;
 using System;
@@ -113,7 +113,10 @@ namespace LibraryCatalog.Tests
             var catalog = readXML.GetItemsFromXmlDocument(CreateXML(isbn, type, title));
 
             // Assert
-            Assert.AreEqual(1, catalog.Count); // items in catalog
+            //Assert.AreEqual(1, catalog.Count); // items in catalog
+
+            // Fluet Assertion
+            catalog.Count.Should().Be(1);
         }
 
         [TestMethod]
@@ -129,8 +132,12 @@ namespace LibraryCatalog.Tests
             var catalog = readXML.GetItemsFromXmlDocument(CreateXML(isbn, type, title));
 
             // Assert
-            Assert.AreEqual(isbn, catalog.First().Key);
-            Assert.AreEqual(title, catalog.First().Value.Title);
+            //Assert.AreEqual(isbn, catalog.First().Key);
+            //Assert.AreEqual(title, catalog.First().Value.Title);
+
+            // Fluent Assertion
+            catalog.First().Key.Should().Be(isbn);
+            catalog.First().Value.Title.Should().Be(title);
         }
 
         [TestMethod]
@@ -156,7 +163,12 @@ namespace LibraryCatalog.Tests
 
             // Assert
             var exception = Assert.ThrowsException<ArgumentException>(act);
-            Assert.AreEqual(expectedMessage, exception.Message);
+            //Assert.AreEqual(expectedMessage, exception.Message);
+
+            // Fluent Assertion
+            act.Should().Throw<ArgumentException>()
+                        .And
+                        .Message.Should().Be(expectedMessage);
         }
 
         [TestMethod]
@@ -284,8 +296,12 @@ namespace LibraryCatalog.Tests
             var catalog = readXML.GetItemsFromXmlDocument(CreateXML(isbn, type, title));
 
             // Assert
-            Assert.AreEqual(1, catalog.Count);
-            Assert.AreEqual(isbn.ToUpper(), catalog.First().Key);
+            //Assert.AreEqual(1, catalog.Count);
+            //Assert.AreEqual(isbn.ToUpper(), catalog.First().Key);
+
+            // Fluent Assertion
+            catalog.Count.Should().Be(1);
+            catalog.First().Key.Should().Be(isbn.ToUpper());
         }
 
         [TestMethod]
@@ -305,65 +321,12 @@ namespace LibraryCatalog.Tests
 
             var item = catalog[isbn];
 
-            Assert.IsNotNull(item);
-            Assert.AreEqual(title, item.Title);
+            //Assert.IsNotNull(item);
+            //Assert.AreEqual(title, item.Title);
+
+            // Fluent Assertion
+            item.Should().NotBeNull();
+            item.Title.Should().Equals(title);
         }
-
-
-        //      [TestMethod]
-        //public void LibraryItemsCanBeRetrievedByKey()
-        //{
-        //	// Arrange
-        //	var libraryCatalogue = new Library(FakeLibrary());
-
-        //	// Act
-        //	var valueByKey = libraryCatalogue.LibraryCatalogue["48039480"].Title;
-        //	var expected = "Harry Potter and the Sorcerer's Stone";
-
-        //	// Assert
-        //	Assert.AreEqual(valueByKey, expected);
-        //}
-
-        //[TestMethod]
-        //public void LibraryItemsHave_ItemType_Book()
-        //{
-        //	//Arrange
-        //	var libraryCatalogue = new Library(FakeLibrary());
-
-        //	//Act
-        //	var bookType = libraryCatalogue.LibraryCatalogue["48039480"].ItemType;
-        //	var expectedBook = "Book";
-
-        //	//Assert
-        //	Assert.AreEqual(expectedBook, bookType);
-        //}
-
-        //[TestMethod]
-        //public void LibraryItemsHave_ItemType_Magazine()
-        //{
-        //	//Arrange
-        //	var libraryCatalogue = new Library(FakeLibrary());
-
-        //	//Act
-        //	var bookType = libraryCatalogue.LibraryCatalogue["50000004"].ItemType;
-        //	var expectedBook = "Magazine";
-
-        //	//Assert
-        //	Assert.AreEqual(expectedBook, bookType);
-        //}
-
-        //[TestMethod]
-        //public void LibraryItemsHave_ItemType_NewReleaseBook()
-        //{
-        //	//Arrange
-        //	var libraryCatalogue = new Library(FakeLibrary());
-
-        //	//Act
-        //	var bookType = libraryCatalogue.LibraryCatalogue["70000015"].ItemType;
-        //	var expectedBook = "NewReleaseBook";
-
-        //	//Assert
-        //	Assert.AreEqual(expectedBook, bookType);
-        //}
     }
 }
